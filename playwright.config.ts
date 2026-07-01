@@ -1,30 +1,14 @@
 import { defineConfig, devices } from '@playwright/test';
 import { defineBddConfig } from 'playwright-bdd';
+import { env } from './src/resources/config/env.config';
+import { createReporters, playwrightRuntime } from './src/resources/config/playwright-runtime.config';
 
-// ==========================
-// Quick Controls (most used)
-// ==========================
-const IS_CI = process.env.CI === 'true';
-const WORKERS = Number(process.env.PARALLEL_WORKERS || (IS_CI ? 1 : 1));
-const RETRIES = Number(process.env.MAX_TEST_RETRIES || (IS_CI ? 0 : 0));
-
-const DEFAULT_TIMEOUT = Number(process.env.DEFAULT_TIMEOUT || 90000);
-const ACTION_TIMEOUT = Number(process.env.ACTION_TIMEOUT || 60000);
-const NAV_TIMEOUT = Number(process.env.NAVIGATION_TIMEOUT || 90000);
-
-const HEADLESS = process.env.BROWSER_HEADLESS === 'true';
-const TRACE = process.env.PW_TRACE || 'on';
-const SCREENSHOT = process.env.PW_SCREENSHOT || 'only-on-failure';
-const VIDEO = process.env.PW_VIDEO || 'retain-on-failure';
+const createBddOutputDir = (projectName: string): string => {
+  const suffix = playwrightRuntime.includeExamples ? 'examples' : 'core';
+  return `.features-gen/${projectName}-${suffix}`;
+};
 
 // Report toggles
-const ENABLE_HTML = process.env.PW_REPORTER_HTML !== 'false';
-const ENABLE_JSON = process.env.PW_REPORTER_JSON !== 'false';
-const ENABLE_JUNIT = process.env.PW_REPORTER_JUNIT !== 'false';
-const ENABLE_ALLURE = process.env.PW_REPORTER_ALLURE !== 'false';
-const ENABLE_LIST = process.env.PW_REPORTER_LIST !== 'false';
-
-// Project toggles
 const ENABLE_UI = process.env.ENABLE_UI_PROJECT !== 'false';
 const ENABLE_API = process.env.ENABLE_API_PROJECT !== 'false';
 const ENABLE_GRAPHQL = process.env.ENABLE_GRAPHQL_PROJECT !== 'false';
@@ -35,54 +19,28 @@ const ENABLE_SMOKE = process.env.ENABLE_SMOKE_PROJECT !== 'false';
 const ENABLE_BDD = process.env.ENABLE_BDD_PROJECT !== 'false';
 
 const bddTestDir = defineBddConfig({
-  features: 'src/tests/UI/__examples-orangehrm__/authentication/features/**/*.feature',
-  steps: [
-    'src/tests/UI/__examples-orangehrm__/authentication/step_definitions/**/*.ts',
-    'src/tests/UI/__examples-orangehrm__/common/fixtures/**/*.ts',
-  ],
-  outputDir: '.features-gen/ui',
+  features: env.bdd.ui.features,
+  steps: env.bdd.ui.steps,
+  outputDir: createBddOutputDir('ui'),
 });
 
 const apiBddTestDir = defineBddConfig({
-  features: 'src/tests/API/__examples-jsonplaceholder__/users/features/**/*.feature',
-  steps: [
-    'src/tests/API/__examples-jsonplaceholder__/step_definitions/common-api.steps.ts',
-    'src/tests/API/__examples-jsonplaceholder__/step_definitions/data-setup.steps.ts',
-  ],
-  outputDir: '.features-gen/api',
+  features: env.bdd.api.features,
+  steps: env.bdd.api.steps,
+  outputDir: createBddOutputDir('api'),
 });
-
-const reporters: Array<[string, Record<string, unknown>]> = [];
-if (ENABLE_HTML) {
-  reporters.push(['html', { outputFolder: 'playwright-report', open: 'never' }]);
-}
-if (ENABLE_JSON) {
-  reporters.push(['json', { outputFile: 'test-results/results.json' }]);
-}
-if (ENABLE_JUNIT) {
-  reporters.push(['junit', { outputFile: 'test-results/junit.xml' }]);
-}
-if (ENABLE_ALLURE) {
-  reporters.push([
-    'allure-playwright',
-    { outputFolder: process.env.ALLURE_RESULTS_DIR || 'allure-results' },
-  ]);
-}
-if (ENABLE_LIST) {
-  reporters.push(['list', { printSteps: true }]);
-}
 
 // Shared browser settings
 const sharedUse = {
-  baseURL: process.env.BASE_URL || 'https://opensource-demo.orangehrmlive.com/web/index.php',
-  headless: HEADLESS,
-  trace: TRACE as 'on' | 'off' | 'retain-on-failure' | 'on-first-retry',
-  screenshot: SCREENSHOT as 'on' | 'off' | 'only-on-failure',
-  video: VIDEO as 'on' | 'off' | 'retain-on-failure' | 'on-first-retry',
-  locale: 'en-US',
-  timezoneId: 'America/New_York',
-  navigationTimeout: NAV_TIMEOUT,
-  actionTimeout: ACTION_TIMEOUT,
+  baseURL: playwrightRuntime.baseURL,
+  headless: playwrightRuntime.headless,
+  trace: playwrightRuntime.trace,
+  screenshot: playwrightRuntime.screenshot,
+  video: playwrightRuntime.video,
+  locale: playwrightRuntime.locale,
+  timezoneId: playwrightRuntime.timezoneId,
+  navigationTimeout: playwrightRuntime.navigationTimeout,
+  actionTimeout: playwrightRuntime.actionTimeout,
   extraHTTPHeaders: { 'Accept-Language': 'en-US,en;q=0.9' },
 };
 
@@ -106,7 +64,7 @@ const projects = [
     name: 'API Testing',
     testMatch: /src\/tests\/API\/.*\.spec\.ts/,
     use: {
-      baseURL: process.env.API_BASE_URL || 'https://jsonplaceholder.typicode.com',
+      baseURL: playwrightRuntime.apiBaseURL,
       extraHTTPHeaders: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -174,7 +132,7 @@ const projects = [
     testDir: apiBddTestDir,
     testMatch: '**/*.spec.js',
     use: {
-      baseURL: process.env.API_BASE_URL || 'https://jsonplaceholder.typicode.com',
+      baseURL: playwrightRuntime.apiBaseURL,
       extraHTTPHeaders: {
         Accept: 'application/json',
         'Content-Type': 'application/json',
@@ -185,13 +143,14 @@ const projects = [
 
 export default defineConfig({
   testDir: './src/tests',
-  timeout: DEFAULT_TIMEOUT,
-  expect: { timeout: ACTION_TIMEOUT },
-  workers: WORKERS,
-  retries: RETRIES,
-  forbidOnly: IS_CI,
+  timeout: playwrightRuntime.timeout,
+  expect: { timeout: playwrightRuntime.actionTimeout },
+  workers: playwrightRuntime.workers,
+  retries: playwrightRuntime.retries,
+  failOnFlakyTests: playwrightRuntime.failOnFlakyTests,
+  forbidOnly: playwrightRuntime.isCI,
   grepInvert: undefined,
-  reporter: reporters,
+  reporter: createReporters(),
   outputDir: 'test-results',
 
   globalSetup: './src/resources/fixtures/global-setup.ts',
@@ -206,7 +165,7 @@ export default defineConfig({
           command: 'pnpm run start:test',
           port: 3000,
           timeout: 120000,
-          reuseExistingServer: !IS_CI,
+          reuseExistingServer: !playwrightRuntime.isCI,
         }
       : undefined,
 });

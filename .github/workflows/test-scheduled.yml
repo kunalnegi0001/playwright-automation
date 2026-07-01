@@ -27,7 +27,7 @@ on:
 
 env:
   NODE_VERSION: "20"
-  PNPM_VERSION: "8"
+  PNPM_VERSION: "9"
 
 jobs:
   determine-tests:
@@ -78,6 +78,11 @@ jobs:
       - name: Install Playwright browsers
         run: pnpm exec playwright install --with-deps chromium
 
+      - name: Validate framework
+        run: pnpm run enterprise:validate
+        env:
+          CI: true
+
       - name: Run UI tests
         run: pnpm run test:ui
         env:
@@ -123,6 +128,11 @@ jobs:
 
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
+
+      - name: Validate framework
+        run: pnpm run enterprise:validate
+        env:
+          CI: true
 
       - name: Run API tests
         run: pnpm run test:api

@@ -189,6 +189,14 @@ class APIClient {
   }
 
   /**
+   * Close API client resources.
+   * Included for service-layer compatibility and future extensibility.
+   */
+  async close(): Promise<void> {
+    return await Promise.resolve();
+  }
+
+  /**
    * Upload file using multipart/form-data
    * @async
    * @param {string} url - Upload endpoint URL

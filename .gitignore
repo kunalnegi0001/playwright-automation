@@ -15,6 +15,7 @@ package-lock.json
 
 # Playwright Test Results
 test-results/
+TestResults/
 playwright-report/
 playwright/.cache/
 playwright-results/
@@ -49,6 +50,7 @@ screenshots/**/*.jpg
 visual-snapshots/**/*.png
 *.webm
 *.mp4
+*.trx
 
 # Backup and temporary files
 *.backup

@@ -11,13 +11,13 @@ These are example tests demonstrating best practices for this test type.
 
 ```bash
 # Run all examples
-pnpm test:examples
+pnpm test:api
 
 # Run this specific example
-npx playwright test API/__examples-jsonplaceholder__
+pnpm bdd:gen:examples && npx playwright test --project=api-bdd
 ```
 
 ## Note
 
-These tests are tagged with `@example` and automatically excluded from regular
-test runs. They serve as reference material and learning resources.
+These tests are reference examples. In the starter repository they run through
+the example profile and can later be replaced by client-specific API suites.

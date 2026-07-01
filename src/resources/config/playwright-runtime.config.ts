@@ -48,6 +48,8 @@ export const playwrightRuntime = {
   apiBaseURL: process.env.API_BASE_URL || env.apiBaseUrl,
   locale: 'en-US',
   timezoneId: 'America/New_York',
+  includeExamples: env.profiles.includeExamples,
+  projectProfile: env.profiles.projectProfile,
 } as const;
 
 /**

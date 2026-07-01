@@ -12,3 +12,5 @@ export {
   isProduction,
   validateEnv,
 } from './env.config';
+
+export { createReporters, playwrightRuntime } from './playwright-runtime.config';

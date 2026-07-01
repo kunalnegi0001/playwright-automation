@@ -61,8 +61,8 @@ Use example-specific data for testing against demo applications:
 
 ```typescript
 // Static JSON data
-import orangehrmCredentials from '@resources/test-data/examples/orangehrm/ui/credentials.json';
-import jsonplaceholderUsers from '@resources/test-data/examples/jsonplaceholder/api/users.json';
+import orangehrmCredentials from '@test-data/examples/orangehrm/ui/credentials.json';
+import jsonplaceholderUsers from '@test-data/examples/jsonplaceholder/api/users.json';
 
 // OrangeHRM demo site
 const { username, password } = orangehrmCredentials.validCredentials.admin;
@@ -84,7 +84,7 @@ import {
   UserFactory,
   ProductFactory,
   OrderFactory,
-} from '@resources/test-data/examples/jsonplaceholder/factories';
+} from '@test-data/examples/jsonplaceholder/factories';
 
 // Generate single entities
 const user = UserFactory.build();
@@ -110,11 +110,11 @@ const order = OrderFactory.build({ customer: user });
 Use builders for complex objects with many optional properties:
 
 ```typescript
-import { OrderBuilder } from '@resources/test-data/examples/jsonplaceholder/builders';
+import { OrderBuilder } from '@test-data/examples/jsonplaceholder/builders';
 import {
   UserFactory,
   ProductFactory,
-} from '@resources/test-data/examples/jsonplaceholder/factories';
+} from '@test-data/examples/jsonplaceholder/factories';
 
 const customer = UserFactory.build();
 const product1 = ProductFactory.build();
@@ -135,8 +135,8 @@ Use schemas for JSON validation of JSONPlaceholder API responses:
 
 ```typescript
 import Ajv from 'ajv';
-import userSchema from '@resources/test-data/examples/jsonplaceholder/schemas/user.schema.json';
-import productSchema from '@resources/test-data/examples/jsonplaceholder/schemas/product.schema.json';
+import userSchema from '@test-data/examples/jsonplaceholder/schemas/user.schema.json';
+import productSchema from '@test-data/examples/jsonplaceholder/schemas/product.schema.json';
 
 const ajv = new Ajv();
 
@@ -162,7 +162,7 @@ import {
   startMockServer,
   stopMockServer,
   resetMockServer,
-} from '@resources/test-data/examples/jsonplaceholder/mocks/setup';
+} from '@test-data/examples/jsonplaceholder/mocks/setup';
 
 // In test setup
 test.beforeAll(async () => {
@@ -195,7 +195,7 @@ import {
   TEST_USERS,
   TEST_CREDIT_CARDS,
   COUNTRIES,
-} from '@resources/test-data/static';
+} from '@test-data/static';
 
 // Test authentication
 await page.fill('#username', TEST_USERS.admin.username);

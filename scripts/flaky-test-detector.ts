@@ -130,7 +130,7 @@ export const analyzeTestResults = (): Map<string, FTTestResult[]> => {
           if (data.suites) {
             extractTests(data.suites, testHistory, stat.mtime);
           }
-        } catch (error) {
+        } catch {
           // Skip invalid JSON files
         }
       }

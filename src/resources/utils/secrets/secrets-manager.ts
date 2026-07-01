@@ -6,7 +6,7 @@
  * - HashiCorp Vault
  * - AWS Secrets Manager
  * - Azure Key Vault
- * - GitHub Secrets (CI/CD)
+ * - CI-hosted secrets (GitHub Actions / Azure DevOps)
  */
 
 import { logger } from '@utils/core';
@@ -15,7 +15,15 @@ import { configManager } from '@config/config.manager';
 /**
  * Supported secret provider types
  */
-export type SecretProvider = 'env' | 'vault' | 'aws' | 'azure' | 'github';
+export type SecretProvider =
+  | 'env'
+  | 'vault'
+  | 'aws'
+  | 'azure'
+  | 'ci'
+  | 'github'
+  | 'ado'
+  | 'azure-devops';
 
 /**
  * Secret metadata
@@ -49,6 +57,7 @@ type CachedSecret = {
 export class SecretsManager {
   private static instance: SecretsManager;
   private cache: Map<string, CachedSecret> = new Map();
+  private azureTokenCache: { accessToken: string; expiresAt: number } | null = null;
   private defaultProvider: SecretProvider;
   private defaultTTL: number = 300000; // 5 minutes
 
@@ -207,8 +216,11 @@ export class SecretsManager {
         return await this.fetchFromAWS(secretName);
       case 'azure':
         return await this.fetchFromAzure(secretName);
+      case 'ci':
+      case 'ado':
+      case 'azure-devops':
       case 'github':
-        return this.fetchFromGitHub(secretName);
+        return this.fetchFromCI(secretName, provider);
       default:
         throw new Error(`Unsupported secret provider: ${provider}`);
     }
@@ -271,28 +283,158 @@ export class SecretsManager {
    * @returns Secret value or null
    */
   private fetchFromAzure = async (secretName: string): Promise<string | null> => {
-    // TODO: Implement Azure Key Vault integration
-    // This requires installing '@azure/keyvault-secrets' and '@azure/identity' packages
-    // Example implementation:
-    // const credential = new DefaultAzureCredential();
-    // const client = new SecretClient(vaultUrl, credential);
-    // const secret = await client.getSecret(secretName);
-    // return secret.value || null;
+    const vaultUrl =
+      this.getEnvironmentValue(['AZURE_KEY_VAULT_URL', 'AZURE_VAULT_URL']) ||
+      (configManager.get('secrets.azure.keyVaultUrl', '') as string);
+    const tenantId =
+      this.getEnvironmentValue(['AZURE_TENANT_ID']) ||
+      (configManager.get('secrets.azure.tenantId', '') as string);
+    const clientId =
+      this.getEnvironmentValue(['AZURE_CLIENT_ID']) ||
+      (configManager.get('secrets.azure.clientId', '') as string);
+    const clientSecret =
+      this.getEnvironmentValue(['AZURE_CLIENT_SECRET']) ||
+      (configManager.get('secrets.azure.clientSecret', '') as string);
 
-    logger.warn('Azure Key Vault integration not yet implemented, falling back to environment', {
+    if (!vaultUrl || !tenantId || !clientId || !clientSecret) {
+      logger.warn('Azure Key Vault configuration incomplete, falling back to environment', {
+        secretName,
+      });
+      return this.fetchFromEnvironment(secretName);
+    }
+
+    try {
+      const accessToken = await this.getAzureAccessToken({ tenantId, clientId, clientSecret });
+      const normalizedVaultUrl = vaultUrl.replace(/\/$/, '');
+      const response = await fetch(
+        `${normalizedVaultUrl}/secrets/${encodeURIComponent(secretName)}?api-version=7.4`,
+        {
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/json',
+          },
+        }
+      );
+
+      if (!response.ok) {
+        logger.warn('Azure Key Vault secret fetch failed, falling back to environment', {
+          secretName,
+          status: response.status,
+        });
+        return this.fetchFromEnvironment(secretName);
+      }
+
+      const payload = (await response.json()) as { value?: string };
+      return payload.value || null;
+    } catch (error) {
+      logger.error('Azure Key Vault integration failed, falling back to environment', {
+        secretName,
+        error,
+      });
+      return this.fetchFromEnvironment(secretName);
+    }
+  };
+
+  /**
+   * Fetch secret from CI-hosted secret stores
+   * @param secretName - Secret name exposed to the pipeline runtime
+   * @param provider - Requested CI provider
+   * @returns Secret value or null
+   */
+  private fetchFromCI = (secretName: string, provider: SecretProvider): string | null => {
+    const resolvedProvider =
+      provider === 'ci' ? this.detectCIProvider() : provider;
+
+    logger.debug('Fetching secret from CI environment', {
       secretName,
+      provider: resolvedProvider,
     });
+
+    // GitHub Actions and Azure DevOps both expose mapped secrets as environment variables
     return this.fetchFromEnvironment(secretName);
   };
 
   /**
-   * Fetch secret from GitHub Actions secrets
-   * @param secretName - Secret name in GitHub
-   * @returns Secret value or null
+   * Detect the active CI provider from environment variables
+   * @returns CI provider name for logging purposes
    */
-  private fetchFromGitHub = (secretName: string): string | null => {
-    // In GitHub Actions, secrets are available as environment variables
-    return this.fetchFromEnvironment(secretName);
+  private detectCIProvider = (): 'github' | 'azure-devops' | 'ci' => {
+    if (process.env.GITHUB_ACTIONS === 'true') {
+      return 'github';
+    }
+
+    if (process.env.TF_BUILD === 'True' || process.env.TF_BUILD === 'true') {
+      return 'azure-devops';
+    }
+
+    return 'ci';
+  };
+
+  /**
+   * Reads the first populated environment variable from a list of names.
+   * @param names - Candidate environment variable names
+   * @returns Environment value or empty string
+   */
+  private getEnvironmentValue = (names: string[]): string => {
+    for (const name of names) {
+      const value = process.env[name];
+      if (value) {
+        return value;
+      }
+    }
+
+    return '';
+  };
+
+  /**
+   * Retrieves an Azure AD access token for Key Vault access.
+   * @param credentials - Azure service principal credentials
+   * @returns Access token string
+   */
+  private getAzureAccessToken = async (credentials: {
+    tenantId: string;
+    clientId: string;
+    clientSecret: string;
+  }): Promise<string> => {
+    if (this.azureTokenCache && this.azureTokenCache.expiresAt > Date.now() + 60000) {
+      return this.azureTokenCache.accessToken;
+    }
+
+    const tokenEndpoint = `https://login.microsoftonline.com/${credentials.tenantId}/oauth2/v2.0/token`;
+    const body = new URLSearchParams({
+      client_id: credentials.clientId,
+      client_secret: credentials.clientSecret,
+      scope: 'https://vault.azure.net/.default',
+      grant_type: 'client_credentials',
+    });
+
+    const response = await fetch(tokenEndpoint, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Azure token request failed with status ${response.status}`);
+    }
+
+    const payload = (await response.json()) as {
+      access_token?: string;
+      expires_in?: number;
+    };
+
+    if (!payload.access_token) {
+      throw new Error('Azure token response did not include an access token');
+    }
+
+    this.azureTokenCache = {
+      accessToken: payload.access_token,
+      expiresAt: Date.now() + (payload.expires_in || 3600) * 1000,
+    };
+
+    return payload.access_token;
   };
 
   /**

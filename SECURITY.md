@@ -17,15 +17,17 @@ described below.
 
 ### How to Report
 
-**Please do NOT report security vulnerabilities through public GitHub issues.**
+**Please do NOT report security vulnerabilities through public issue trackers.**
 
 Instead, please report them via one of the following methods:
 
 1. **Email:** Send details to
    [security@example.com](mailto:security@example.com)
-2. **GitHub Security Advisories:** Use the
+2. **GitHub Security Advisories (when hosted on GitHub):** Use the
    [Security Advisory](https://github.com/successivedigitalorg/playwright-enterprise-framework/security/advisories/new)
    feature
+3. **Azure DevOps private reporting (when hosted in ADO):** Use the client's
+   approved private security intake process or restricted security project
 
 ### What to Include
 
@@ -81,21 +83,22 @@ Please include the following information in your report:
 
 ### CI/CD Security
 
-1. **GitHub Actions Secrets**
-   - Store sensitive data as GitHub Secrets
+1. **Pipeline Secrets**
+   - Store sensitive data in GitHub Secrets, Azure DevOps Variable Groups, or
+     Azure Key Vault
    - Use environment-specific secrets
    - Review secret access logs regularly
 
-2. **Third-party Actions**
-   - Only use verified GitHub Actions
-   - Pin action versions using commit SHA
-   - Review action permissions regularly
+2. **Pipeline Tasks & Integrations**
+   - Only use verified GitHub Actions or trusted Azure DevOps tasks/extensions
+   - Pin action or task versions where possible
+   - Review pipeline permissions regularly
 
 ### Dependency Security
 
 1. **Keep Dependencies Updated**
    - Run `pnpm audit` regularly
-   - Enable Dependabot alerts
+   - Enable Dependabot or Azure DevOps dependency scanning where available
    - Review and update dependencies weekly
 
 2. **Vulnerability Scanning**
@@ -150,9 +153,9 @@ Pre-commit hooks help prevent security issues:
 
 ### Automated Scanning
 
-- **CodeQL:** Automated code security analysis
-- **Dependabot:** Automated dependency vulnerability alerts
-- **Secret Scanning:** GitHub secret scanning enabled
+- **CodeQL / SAST:** Automated code security analysis
+- **Dependabot or platform-native dependency scanning:** Automated dependency vulnerability alerts
+- **Secret Scanning:** Use GitHub secret scanning or Azure DevOps-compatible secret scanning
 - **Container Scanning:** Docker image vulnerability scanning (if applicable)
 
 ## Compliance
@@ -187,10 +190,8 @@ For security concerns or questions:
 
 - **Security Team:** [security@example.com](mailto:security@example.com)
 - **Framework Maintainers:** See [CONTRIBUTING.md](CONTRIBUTING.md)
-- **Security Practices:** See [docs/security.md](docs/security.md) for
-  implementation details
-- **Secrets Management:** See [docs/security.md](docs/security.md) for
-  credential handling
+- **Secrets Management:** See `src/resources/utils/secrets/` for credential
+   handling patterns
 
 ## Acknowledgments
 

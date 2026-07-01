@@ -52,48 +52,47 @@ __examples-orangehrm__/
 
 ```bash
 # Run examples (recommended)
-pnpm test:examples
+pnpm test:ui
 
 # Run in UI mode (for interactive exploration)
-pnpm test:examples --ui
+pnpm test:ui-mode
 
 # Run in debug mode
-pnpm test:examples --debug
+pnpm test:debug
 
 # Run in headed mode (see browser)
-pnpm test:examples --headed
+pnpm test:headed
 
 # Using npx directly
-pnpm bdd:gen && npx playwright test --project=bdd-examples
+pnpm bdd:gen:examples && npx playwright test --project=bdd
 ```
 
 ### Run Specific Feature
 
 ```bash
-pnpm test:examples --grep "Dashboard"
+pnpm bdd:gen:examples && npx playwright test --project=bdd --grep "Dashboard"
 ```
 
 ### Filter by Scenario Tag
 
 ```bash
 # Run only @smoke tagged scenarios
-pnpm test:examples --grep @smoke
+pnpm bdd:gen:examples && npx playwright test --project=bdd --grep @smoke
 
 # Run only @regression tagged scenarios
-pnpm test:examples --grep @regression
+pnpm bdd:gen:examples && npx playwright test --project=bdd --grep @regression
 ```
 
 ## 📝 Configuration
 
 Examples run through the **main Playwright config** with an example-only
-project:
-`bdd-examples`
+project: `bdd`
 
 This ensures:
 
 - ✅ Explicit separation between example and framework project execution
 - ✅ Shared reporting policy with standard output paths
-- ✅ Separate generated BDD specs (`.features-gen/ui/examples/`)
+- ✅ Separate generated BDD specs (`.features-gen/ui-examples/`)
 - ✅ Consistent base URL and runtime settings via centralized config
 
 ## 🔧 Key Differences from Main Framework

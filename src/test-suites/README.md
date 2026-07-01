@@ -114,21 +114,22 @@ test.describe('Smoke Suite', smokeTests);
 ### CI/CD Integration
 
 ```yaml
-# .github/workflows/test.yml
+# GitHub Actions
 jobs:
   smoke:
-    name: Smoke Tests
     runs-on: ubuntu-latest
     steps:
       - run: pnpm test:smoke
 
-  regression:
-    name: Full Regression
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule'
+# Azure DevOps
+jobs:
+  - job: regression
     steps:
-      - run: pnpm test --grep "@regression"
+      - script: pnpm test --grep "@regression"
 ```
+
+Use the same suite commands across GitHub Actions and Azure DevOps. Only the
+pipeline wrapper changes.
 
 ## When to Create a New Suite
 

@@ -7,6 +7,27 @@ This repository is intentionally simplified for new-project bootstrapping:
 - one API reference flow (JSONPlaceholder create-user CRUD step)
 - Allure + Playwright reporting
 - pnpm-based workflow
+- GitHub-first source layout with Azure DevOps-ready onboarding
+
+## Source control portability
+
+This framework now keeps source-control-specific assets isolated so the same codebase can be used in both GitHub and Azure DevOps:
+
+- `.github/` keeps GitHub-only assets such as Actions, Copilot agents, templates, and repository metadata.
+- `ai/` remains platform-neutral and should be retained in both GitHub and Azure DevOps clones.
+- `azure-pipelines.yml` provides an Azure DevOps pipeline out of the box.
+- `pnpm repo:prepare:ado` removes `.github/` from a client clone when the target organization wants a clean Azure DevOps-only repository.
+
+### Azure DevOps onboarding
+
+For a client clone hosted in Azure DevOps:
+
+1. Clone or import the repository into Azure Repos.
+2. Run `pnpm install`.
+3. Run `pnpm repo:prepare:ado` if the client wants GitHub-only assets removed.
+4. Create a pipeline that points to `azure-pipelines.yml`.
+5. Configure secure variables in Azure DevOps Variable Groups or Azure Key Vault.
+6. Adjust branch filters, environments, and secrets for the client project.
 
 ## What is included
 
@@ -91,6 +112,12 @@ pnpm test:e2e
 pnpm typecheck
 ```
 
+### Enterprise validation
+
+```bash
+pnpm enterprise:validate
+```
+
 ## Reports
 
 ### Playwright HTML report
@@ -123,6 +150,7 @@ In playwright.config.ts:
 
 ```text
 .
+├── azure-pipelines.yml
 ├── .github/
 │   ├── agents/
 │   ├── prompts/
@@ -130,6 +158,8 @@ In playwright.config.ts:
 ├── ai/
 │   ├── instructions/
 │   └── templates/
+├── scripts/
+│   └── prepare-ado.mjs
 ├── src/
 │   ├── resources/
 │   │   ├── config/
@@ -147,5 +177,6 @@ In playwright.config.ts:
 
 - This starter keeps only reference scenarios by design.
 - If you add more features, update playwright.config.ts globs intentionally.
-- GitHub-native AI assets remain under .github for compatibility.
-- Additional AI coding guidance/templates are under ai/.
+- GitHub-only repository assets remain isolated under `.github/`.
+- Azure DevOps execution is supported through `azure-pipelines.yml` and `pnpm repo:prepare:ado`.
+- Additional AI coding guidance/templates are under `ai/` and should be kept in both hosting models.

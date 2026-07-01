@@ -42,24 +42,29 @@ Framework.
 
 ### Initial Setup
 
-1. **Fork the repository**
+1. **Create your working copy**
 
    ```bash
-   # Click "Fork" on GitHub
+  # GitHub contribution flow: fork the repository
+  # Azure DevOps flow: clone the shared repository directly or create a branch in Azure Repos
    ```
 
-2. **Clone your fork**
+2. **Clone your repository**
 
    ```bash
-   git clone https://github.com/YOUR_USERNAME/playwright-enterprise-framework.git
+  git clone <your-repository-url>
    cd playwright-enterprise-framework
    ```
 
-3. **Add upstream remote**
+3. **Add upstream remote (optional)**
 
    ```bash
    git remote add upstream https://github.com/successivedigitalorg/playwright-enterprise-framework.git
    ```
+
+  If you are working only in Azure DevOps, keep your Azure Repos remote and
+  skip the `upstream` remote unless you also contribute back to the GitHub
+  source repository.
 
 4. **Install dependencies**
 
@@ -126,7 +131,10 @@ Follow our [commit conventions](#commit-conventions).
 git push origin feature/your-feature-name
 ```
 
-Then create a Pull Request on GitHub.
+Then create a Pull Request in the host platform you are using:
+
+- GitHub → open a Pull Request
+- Azure DevOps → open an Azure Repos Pull Request
 
 ---
 

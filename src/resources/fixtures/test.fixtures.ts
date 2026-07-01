@@ -57,7 +57,7 @@ export const test = base.extend<CustomTestFixtures>({
    * Configuration fixture
    * Provides access to application configuration and test user credentials
    */
-  config: async ({}, use) => {
+  config: async (_fixtures, use) => {
     await use(configManager);
   },
 
@@ -65,7 +65,7 @@ export const test = base.extend<CustomTestFixtures>({
    * Logger fixture
    * Provides access to the centralized logging utility
    */
-  logger: async ({}, use) => {
+  logger: async (_fixtures, use) => {
     await use(logger);
   },
 
@@ -80,11 +80,12 @@ export const test = base.extend<CustomTestFixtures>({
 
     // Get test user credentials
     const user = configManager.getConfigTestUser('standard');
+    const loginIdentity = user.email || user.username || '';
     const authProvider = AuthFactory.createProvider('basic');
 
     // Authenticate - map username to email if needed
     await authProvider.authenticate(
-      { email: user.username || '', password: user.password || '' },
+      { email: loginIdentity, password: user.password || '' },
       page,
       { saveState: true }
     );
@@ -103,10 +104,11 @@ export const test = base.extend<CustomTestFixtures>({
     const page = await context.newPage();
 
     const user = configManager.getConfigTestUser('admin');
+    const loginIdentity = user.email || user.username || '';
     const authProvider = AuthFactory.createProvider('basic');
 
     await authProvider.authenticate(
-      { email: user.username || '', password: user.password || '' },
+      { email: loginIdentity, password: user.password || '' },
       page,
       { saveState: true }
     );

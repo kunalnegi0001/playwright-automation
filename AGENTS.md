@@ -266,6 +266,10 @@ type UserConfig = {
 The framework includes three specialized GitHub Copilot agents for specific
 workflows:
 
+> Azure DevOps note: these assets are intentionally isolated under `.github/`.
+> For client Azure DevOps clones, keep `ai/` and `azure-pipelines.yml`, and
+> remove `.github/` if the client does not want GitHub-specific metadata.
+
 ### 1. Playwright Test Planner (`playwright-test-planner`)
 
 **Purpose:** Creates comprehensive test plans for web applications

@@ -1,0 +1,232 @@
+trigger:
+  branches:
+    include:
+      - main
+      - develop
+
+pr:
+  branches:
+    include:
+      - main
+      - develop
+
+schedules:
+  - cron: '0 2 * * 1-5'
+    displayName: Weekday nightly regression
+    branches:
+      include:
+        - main
+    always: true
+
+parameters:
+  - name: testSuite
+    displayName: Test suite
+    type: string
+    default: all
+    values:
+      - all
+      - ui
+      - api
+  - name: environment
+    displayName: Target environment
+    type: string
+    default: staging
+    values:
+      - staging
+      - production
+
+variables:
+  NODE_VERSION: '20'
+  PNPM_VERSION: '9'
+  CI: 'true'
+  TEST_ENV: ${{ parameters.environment }}
+
+stages:
+  - stage: validate
+    displayName: Validate framework
+    jobs:
+      - job: typecheck
+        displayName: Type check
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+
+          - task: UseNode@1
+            displayName: Use Node.js $(NODE_VERSION)
+            inputs:
+              version: $(NODE_VERSION)
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: Enable pnpm
+
+          - script: pnpm install --frozen-lockfile
+            displayName: Install dependencies
+
+          - script: pnpm run enterprise:validate
+            displayName: Run enterprise validation
+
+  - stage: tests
+    displayName: Execute tests
+    dependsOn: validate
+    jobs:
+      - job: ui_tests
+        displayName: UI BDD tests
+        condition: and(succeeded(), or(eq('${{ parameters.testSuite }}', 'all'), eq('${{ parameters.testSuite }}', 'ui')))
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+
+          - task: UseNode@1
+            displayName: Use Node.js $(NODE_VERSION)
+            inputs:
+              version: $(NODE_VERSION)
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: Enable pnpm
+
+          - script: pnpm install --frozen-lockfile
+            displayName: Install dependencies
+
+          - script: pnpm exec playwright install --with-deps chromium
+            displayName: Install Playwright browsers
+
+          - script: pnpm run test:ui
+            displayName: Run UI tests
+            env:
+              CI: $(CI)
+              TEST_ENV: $(TEST_ENV)
+
+          - task: PublishTestResults@2
+            displayName: Publish UI JUnit results
+            condition: always()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: test-results/junit.xml
+              searchFolder: $(System.DefaultWorkingDirectory)
+              testRunTitle: UI Automation
+              mergeTestResults: false
+              failTaskOnFailedTests: false
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish UI artifacts
+            condition: always()
+            inputs:
+              targetPath: test-results
+              artifact: test-results-ui
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish UI Allure results
+            condition: always()
+            inputs:
+              targetPath: allure-results
+              artifact: allure-results-ui
+
+      - job: api_tests
+        displayName: API BDD tests
+        condition: and(succeeded(), or(eq('${{ parameters.testSuite }}', 'all'), eq('${{ parameters.testSuite }}', 'api')))
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+
+          - task: UseNode@1
+            displayName: Use Node.js $(NODE_VERSION)
+            inputs:
+              version: $(NODE_VERSION)
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: Enable pnpm
+
+          - script: pnpm install --frozen-lockfile
+            displayName: Install dependencies
+
+          - script: pnpm run test:api
+            displayName: Run API tests
+            env:
+              CI: $(CI)
+              TEST_ENV: $(TEST_ENV)
+
+          - task: PublishTestResults@2
+            displayName: Publish API JUnit results
+            condition: always()
+            inputs:
+              testResultsFormat: JUnit
+              testResultsFiles: test-results/junit.xml
+              searchFolder: $(System.DefaultWorkingDirectory)
+              testRunTitle: API Automation
+              mergeTestResults: false
+              failTaskOnFailedTests: false
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish API artifacts
+            condition: always()
+            inputs:
+              targetPath: test-results
+              artifact: test-results-api
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish API Allure results
+            condition: always()
+            inputs:
+              targetPath: allure-results
+              artifact: allure-results-api
+
+  - stage: reports
+    displayName: Merge reports
+    dependsOn: tests
+    condition: always()
+    jobs:
+      - job: allure_report
+        displayName: Generate Allure report
+        pool:
+          vmImage: ubuntu-latest
+        steps:
+          - checkout: self
+
+          - task: UseNode@1
+            displayName: Use Node.js $(NODE_VERSION)
+            inputs:
+              version: $(NODE_VERSION)
+
+          - script: |
+              corepack enable
+              corepack prepare pnpm@$(PNPM_VERSION) --activate
+            displayName: Enable pnpm
+
+          - script: pnpm install --frozen-lockfile
+            displayName: Install dependencies
+
+          - download: current
+            artifact: allure-results-ui
+            continueOnError: true
+
+          - download: current
+            artifact: allure-results-api
+            continueOnError: true
+
+          - script: |
+              mkdir -p allure-results-merged
+              find "$(Pipeline.Workspace)" -type f \( -path '*allure-results-ui/*' -o -path '*allure-results-api/*' \) -exec cp {} allure-results-merged/ \;
+
+              if [ "$(find allure-results-merged -type f | wc -l | tr -d ' ')" = "0" ]; then
+                echo "No Allure files found. Skipping report generation."
+                exit 0
+              fi
+
+              pnpm exec allure generate allure-results-merged -o allure-report --clean
+            displayName: Generate merged Allure report
+
+          - task: PublishPipelineArtifact@1
+            displayName: Publish merged Allure report
+            condition: always()
+            inputs:
+              targetPath: allure-report
+              artifact: allure-report

@@ -126,6 +126,52 @@ export class UserService {
   }
 
   /**
+   * Standard enterprise CRUD alias for retrieving all users.
+   * @param params - Optional query parameters
+   * @returns Array of users
+   */
+  async getAll(params: UserQueryParams = {}): Promise<UserItem[]> {
+    return await this.getAllUsers(params);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for retrieving a user by ID.
+   * @param id - User identifier
+   * @returns User record
+   */
+  async getById(id: string | number): Promise<UserItem> {
+    return await this.getUserById(id);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for creating a user.
+   * @param data - User payload
+   * @returns Created user
+   */
+  async create(data: UserData): Promise<UserItem> {
+    return await this.createUser(data);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for updating a user.
+   * @param id - User identifier
+   * @param data - Partial user payload
+   * @returns Updated user
+   */
+  async update(id: string | number, data: UserData): Promise<UserItem> {
+    return await this.updateUser(id, data);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for deleting a user.
+   * @param id - User identifier
+   * @returns Delete response
+   */
+  async delete(id: string | number): Promise<unknown> {
+    return await this.deleteUser(id);
+  }
+
+  /**
    * Retrieves all users with optional filtering and pagination
    * @param params - Query parameters for filtering (page, limit, role, status)
    * @returns Promise resolving to array of user objects

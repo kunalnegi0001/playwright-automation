@@ -43,6 +43,8 @@ type ConfigAuth = {
  * Test user credentials
  */
 type ConfigTestUser = {
+  /** Email address */
+  email?: string;
   /** Username or email */
   username?: string;
   /** User password */
@@ -323,7 +325,7 @@ class ConfigManager {
       this.config = this.mergeConfigs(this.config, this.projectConfig);
 
       console.log(`Loaded project configuration: ${projectName}`);
-    } catch (error) {
+    } catch {
       console.log(`No project-specific config found for ${projectName}, using base config`);
     }
   }

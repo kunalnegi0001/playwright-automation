@@ -77,7 +77,50 @@ const envSchema = Joi.object({
   // ==================== CI/CD ====================
   CI: Joi.boolean().optional().description('Running in CI environment'),
 
+  CI_PROVIDER: Joi.string()
+    .valid('github', 'azure-devops', 'ado', 'local', 'other')
+    .optional()
+    .description('CI platform identifier'),
+
   GITHUB_ACTIONS: Joi.boolean().optional().description('Running in GitHub Actions'),
+
+  TF_BUILD: Joi.boolean().optional().description('Running in Azure DevOps Pipelines'),
+
+  SYSTEM_COLLECTIONURI: Joi.string()
+    .uri()
+    .optional()
+    .description('Azure DevOps organization collection URI'),
+
+  SYSTEM_TEAMPROJECT: Joi.string().optional().description('Azure DevOps team project name'),
+
+  BUILD_BUILDID: Joi.string().optional().description('Azure DevOps build identifier'),
+
+  BUILD_SOURCEBRANCH: Joi.string().optional().description('Source branch for the current CI run'),
+
+  BUILD_REASON: Joi.string().optional().description('Reason the current pipeline run was triggered'),
+
+  PROJECT_PROFILE: Joi.string()
+    .valid('core', 'example', 'examples', 'client')
+    .optional()
+    .description('Framework project profile'),
+
+  INCLUDE_EXAMPLES: Joi.boolean().optional().description('Include bundled example suites'),
+
+  UI_BDD_FEATURES_GLOB: Joi.string().optional().description('Comma-separated UI feature globs'),
+
+  UI_BDD_STEPS_GLOBS: Joi.string().optional().description('Comma-separated UI step globs'),
+
+  API_BDD_FEATURES_GLOB: Joi.string().optional().description('Comma-separated API feature globs'),
+
+  API_BDD_STEPS_GLOBS: Joi.string().optional().description('Comma-separated API step globs'),
+
+  AZURE_KEY_VAULT_URL: Joi.string().uri().optional().description('Azure Key Vault URL'),
+
+  AZURE_TENANT_ID: Joi.string().optional().description('Azure AD tenant identifier'),
+
+  AZURE_CLIENT_ID: Joi.string().optional().description('Azure AD client identifier'),
+
+  AZURE_CLIENT_SECRET: Joi.string().optional().description('Azure AD client secret'),
 
   // ==================== Reporting ====================
   ENABLE_ALLURE: Joi.boolean().default(true).description('Enable Allure reporting'),

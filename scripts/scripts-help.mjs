@@ -11,11 +11,13 @@ const categories = [
   {
     title: '🧱 Setup & Maintenance',
     match: (name) =>
-      ['postinstall', 'clean', 'install:browsers'].includes(name),
+      ['postinstall', 'clean', 'install:browsers'].includes(name) ||
+      name.startsWith('repo:'),
   },
   {
     title: '🔎 Validation',
-    match: (name) => ['typecheck'].includes(name),
+    match: (name) =>
+      ['typecheck', 'lint', 'lint:fix', 'format', 'format:check', 'health:check', 'security:check', 'enterprise:validate'].includes(name),
   },
   {
     title: '🧪 Tests',

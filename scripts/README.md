@@ -5,6 +5,47 @@ consistency across the framework.
 
 ## Available Scripts
 
+### `health-check.mjs`
+
+Runs a lightweight framework readiness check for local development and CI.
+
+**Usage:**
+
+```bash
+pnpm health:check
+```
+
+**What it does:**
+
+- Verifies key framework files exist
+- Confirms Node.js and Playwright browser readiness
+- Runs the supported TypeScript validation command
+- Checks minimum environment readiness for CI
+
+### `prepare-ado.mjs`
+
+Prepares a client clone for Azure DevOps usage while keeping the main repository
+GitHub-compatible.
+
+**Usage:**
+
+```bash
+# Keep .github but validate ADO assets
+pnpm repo:prepare:ado:keep-github
+
+# Remove .github from a client clone
+pnpm repo:prepare:ado
+
+# Preview what would be removed
+node ./scripts/prepare-ado.mjs --remove-github --dry-run
+```
+
+**What it does:**
+
+- Confirms `azure-pipelines.yml` is present
+- Optionally removes `.github/` from a client clone
+- Prints the next Azure DevOps onboarding steps
+
 ### `fix-imports.ts`
 
 Automatically converts relative imports to path aliases throughout the codebase.

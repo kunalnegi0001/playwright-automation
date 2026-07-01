@@ -124,6 +124,52 @@ export class ProductService {
   }
 
   /**
+   * Standard enterprise CRUD alias for retrieving all products.
+   * @param params - Optional query parameters
+   * @returns Array of products
+   */
+  async getAll(params: ProductQueryParams = {}): Promise<ProductItem[]> {
+    return await this.getAllProducts(params);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for retrieving a product by ID.
+   * @param id - Product identifier
+   * @returns Product record
+   */
+  async getById(id: string | number): Promise<ProductItem> {
+    return await this.getProductById(id);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for creating a product.
+   * @param data - Product payload
+   * @returns Created product
+   */
+  async create(data: ProductData): Promise<ProductItem> {
+    return await this.createProduct(data);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for updating a product.
+   * @param id - Product identifier
+   * @param data - Partial product payload
+   * @returns Updated product
+   */
+  async update(id: string | number, data: ProductData): Promise<ProductItem> {
+    return await this.updateProduct(id, data);
+  }
+
+  /**
+   * Standard enterprise CRUD alias for deleting a product.
+   * @param id - Product identifier
+   * @returns Delete response
+   */
+  async delete(id: string | number): Promise<unknown> {
+    return await this.deleteProduct(id);
+  }
+
+  /**
    * Get all products with optional filtering and pagination
    * @param {Object} [params={}] - Query parameters for filtering
    * @param {number} [params.page] - Page number for pagination

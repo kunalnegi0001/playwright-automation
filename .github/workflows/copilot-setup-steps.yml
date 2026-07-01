@@ -47,6 +47,5 @@ jobs:
       - name: Install Playwright Browsers
         run: pnpm exec playwright install --with-deps
 
-      # Customize this step as needed
-      - name: Build application
-        run: pnpm run build
+      - name: Validate framework
+        run: pnpm run enterprise:validate

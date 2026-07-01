@@ -130,10 +130,12 @@ const baseConfig = {
   // Test Users
   testUsers: {
     admin: {
+      username: process.env.TEST_USER_ADMIN_USERNAME || process.env.TEST_USER_ADMIN_EMAIL,
       email: process.env.TEST_USER_ADMIN_EMAIL,
       password: process.env.TEST_USER_ADMIN_PASSWORD,
     },
     standard: {
+      username: process.env.TEST_USER_STANDARD_USERNAME || process.env.TEST_USER_STANDARD_EMAIL,
       email: process.env.TEST_USER_STANDARD_EMAIL,
       password: process.env.TEST_USER_STANDARD_PASSWORD,
     },
@@ -224,7 +226,7 @@ export const loadEnvironmentConfig = async (): Promise<Record<string, unknown>> 
   try {
     const envConfig = (await import(envConfigPath)) as { default?: Record<string, unknown> };
     return (envConfig.default || envConfig) as Record<string, unknown>;
-  } catch (error) {
+  } catch {
     // Environment config is optional
     console.log(`No environment config found for ${env}, using base config`);
     return {};

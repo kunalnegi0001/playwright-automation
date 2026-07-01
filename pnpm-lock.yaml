@@ -55,11 +55,11 @@ importers:
         specifier: ^3.0.1
         version: 3.0.1(ajv@8.20.0)
       allure-commandline:
-        specifier: ^2.25.0
-        version: 2.36.0
+        specifier: ^2.43.0
+        version: 2.43.0
       allure-playwright:
-        specifier: ^3.0.0-beta.9
-        version: 3.4.5(@playwright/test@1.58.2)
+        specifier: ^3.10.2
+        version: 3.10.2(@playwright/test@1.58.2)
       cross-env:
         specifier: ^7.0.3
         version: 7.0.3
@@ -545,20 +545,20 @@ packages:
   ajv@8.20.0:
     resolution: {integrity: sha512-Thbli+OlOj+iMPYFBVBfJ3OmCAnaSyNn4M1vz9T6Gka5Jt9ba/HIR56joy65tY6kx/FCF5VXNB819Y7/GUrBGA==}
 
-  allure-commandline@2.36.0:
-    resolution: {integrity: sha512-ls/4fk2Psv2Tu2PbWFrQPmUnm3gmmO9MBan4MuPWwqdkJPEmln2KRwtvtWYr9Av+e5AnFK1fGXWVyxqJIPiPwA==}
+  allure-commandline@2.43.0:
+    resolution: {integrity: sha512-nsqccDOgi80fi9WjvBapZjlFlugodVWudotNtWx6XKiSI7NuN6oTWEkXnkxQBzNg02Yf9lZLtCFlKvjAlcpu6Q==}
     hasBin: true
 
-  allure-js-commons@3.4.5:
-    resolution: {integrity: sha512-mzAppLFva9PJqWvdI/aXn8jqr+5Am67JITdthMfEk8En6AhsrvRWZAjHZ1yUMDGEbxmivCni3lppvitJGStxFQ==}
+  allure-js-commons@3.10.2:
+    resolution: {integrity: sha512-5nAjUF1iNPSQMwKtEsadclSta8C3L705/k/pIzGb9M6P9krgfRaCyaEHt8pkLlCP9NFj5xk3grjtnAhiLeT+Kg==}
     peerDependencies:
-      allure-playwright: 3.4.5
+      allure-playwright: 3.10.2
     peerDependenciesMeta:
       allure-playwright:
         optional: true
 
-  allure-playwright@3.4.5:
-    resolution: {integrity: sha512-pVewTpU9Z4qgT14VJdtYLAfF8rWROuESmvDkvyu/QnFWhRFrcDBnomynj84yx/QpXyMjJL+qu1yMU2z4Mq1YnA==}
+  allure-playwright@3.10.2:
+    resolution: {integrity: sha512-CGyhxSvx2bIkojhBy0pbQZ12vkLbOE3FBh39WgzPs+katwnuGPUE0whJhryG8aD/dlDALxMehL9G0k8WYBx4tQ==}
     peerDependencies:
       '@playwright/test': '>=1.53.0'
 
@@ -1819,18 +1819,18 @@ snapshots:
       json-schema-traverse: 1.0.0
       require-from-string: 2.0.2
 
-  allure-commandline@2.36.0: {}
+  allure-commandline@2.43.0: {}
 
-  allure-js-commons@3.4.5(allure-playwright@3.4.5(@playwright/test@1.58.2)):
+  allure-js-commons@3.10.2(allure-playwright@3.10.2(@playwright/test@1.58.2)):
     dependencies:
       md5: 2.3.0
     optionalDependencies:
-      allure-playwright: 3.4.5(@playwright/test@1.58.2)
+      allure-playwright: 3.10.2(@playwright/test@1.58.2)
 
-  allure-playwright@3.4.5(@playwright/test@1.58.2):
+  allure-playwright@3.10.2(@playwright/test@1.58.2):
     dependencies:
       '@playwright/test': 1.58.2
-      allure-js-commons: 3.4.5(allure-playwright@3.4.5(@playwright/test@1.58.2))
+      allure-js-commons: 3.10.2(allure-playwright@3.10.2(@playwright/test@1.58.2))
 
   ansi-regex@5.0.1: {}
 

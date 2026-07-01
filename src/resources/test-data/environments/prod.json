@@ -1,0 +1,42 @@
+{
+  "environment": "production",
+  "baseUrl": "https://www.example.com",
+  "apiBaseUrl": "https://jsonplaceholder.typicode.com",
+  "graphqlEndpoint": "https://jsonplaceholder.typicode.com/graphql",
+  "database": {
+    "host": "prod-db.example.com",
+    "port": 5432,
+    "name": "prod_db",
+    "user": "prod_readonly_user"
+  },
+  "features": {
+    "enableVisualTesting": true,
+    "enableAccessibilityTesting": true,
+    "enablePerformanceTesting": true,
+    "enableMocking": false,
+    "enableVideoRecording": true,
+    "enableTracing": false
+  },
+  "timeouts": {
+    "default": 60000,
+    "navigation": 60000,
+    "action": 20000
+  },
+  "retries": {
+    "maxTestRetries": 3,
+    "flakyTestRetries": 5
+  },
+  "parallelization": {
+    "workers": 16
+  },
+  "monitoring": {
+    "enabled": true,
+    "datadog": {
+      "enabled": true,
+      "apiKey": "DD_API_KEY"
+    },
+    "newRelic": {
+      "enabled": false
+    }
+  }
+}

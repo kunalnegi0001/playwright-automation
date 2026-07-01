@@ -1,0 +1,147 @@
+name: Scheduled Regression Tests
+
+on:
+  schedule:
+    # Run nightly at 2 AM UTC (weekdays)
+    - cron: "0 2 * * 1-5"
+    # Run weekly full regression on Sunday at 3 AM UTC
+    - cron: "0 3 * * 0"
+  workflow_dispatch:
+    inputs:
+      test_suite:
+        description: "Test suite to run"
+        required: true
+        type: choice
+        options:
+          - all
+          - ui
+          - api
+      environment:
+        description: "Target environment"
+        required: true
+        type: choice
+        options:
+          - staging
+          - production
+        default: staging
+
+env:
+  NODE_VERSION: "20"
+  PNPM_VERSION: "8"
+
+jobs:
+  determine-tests:
+    name: Determine Test Suite
+    runs-on: ubuntu-latest
+    outputs:
+      run_ui: ${{ steps.suite.outputs.run_ui }}
+      run_api: ${{ steps.suite.outputs.run_api }}
+    steps:
+      - name: Determine test suite
+        id: suite
+        run: |
+          if [[ "${{ github.event_name }}" == "schedule" ]]; then
+            # Scheduled runs are always UI/API only
+            echo "run_ui=true" >> $GITHUB_OUTPUT
+            echo "run_api=true" >> $GITHUB_OUTPUT
+          else
+            # Manual trigger
+            suite="${{ github.event.inputs.test_suite }}"
+            echo "run_ui=$([[ $suite == 'all' || $suite == 'ui' ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+            echo "run_api=$([[ $suite == 'all' || $suite == 'api' ]] && echo true || echo false)" >> $GITHUB_OUTPUT
+          fi
+
+  ui-tests:
+    name: UI BDD Tests
+    runs-on: ubuntu-latest
+    needs: determine-tests
+    if: needs.determine-tests.outputs.run_ui == 'true'
+    timeout-minutes: 60
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Run UI tests
+        run: pnpm run test:ui
+        env:
+          CI: true
+          TEST_ENV: ${{ github.event.inputs.environment || 'staging' }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ui-results
+          path: test-results/
+          retention-days: 30
+
+      - name: Upload UI Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-ui
+          path: allure-results/
+          retention-days: 30
+
+  api-tests:
+    name: API Tests
+    runs-on: ubuntu-latest
+    needs: determine-tests
+    if: needs.determine-tests.outputs.run_api == 'true'
+    timeout-minutes: 30
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Run API tests
+        run: pnpm run test:api
+        env:
+          CI: true
+          TEST_ENV: ${{ github.event.inputs.environment || 'staging' }}
+
+      - name: Upload test results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-results
+          path: test-results/
+          retention-days: 30
+
+      - name: Upload API Allure results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: allure-results-api
+          path: allure-results/
+          retention-days: 30

@@ -1,0 +1,57 @@
+{
+  "registration": {
+    "valid": {
+      "firstName": "John",
+      "lastName": "Doe",
+      "email": "john.doe@example.com",
+      "password": "SecurePass123!",
+      "confirmPassword": "SecurePass123!",
+      "phoneNumber": "+1234567890",
+      "dateOfBirth": "1990-01-15",
+      "address": {
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94105",
+        "country": "USA"
+      },
+      "acceptTerms": true
+    },
+    "invalid": {
+      "passwordMismatch": {
+        "password": "SecurePass123!",
+        "confirmPassword": "DifferentPass456!",
+        "expectedError": "Passwords do not match"
+      },
+      "invalidEmail": {
+        "email": "invalid-email",
+        "expectedError": "Please enter a valid email"
+      },
+      "weakPassword": {
+        "password": "123",
+        "expectedError": "Password must be at least 8 characters"
+      }
+    }
+  },
+  "checkout": {
+    "shippingInfo": {
+      "fullName": "Jane Smith",
+      "address": "456 Oak Avenue",
+      "city": "New York",
+      "state": "NY",
+      "zipCode": "10001",
+      "country": "USA",
+      "phone": "+1987654321"
+    },
+    "paymentInfo": {
+      "cardNumber": "4242424242424242",
+      "expiryDate": "12/28",
+      "cvv": "123",
+      "cardholderName": "Jane Smith"
+    }
+  },
+  "search": {
+    "validQueries": ["laptop", "wireless mouse", "USB-C cable", "headphones"],
+    "invalidQueries": ["", "   ", "!@#$%^&*()"]
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "environment": "development",
+  "baseUrl": "http://localhost:3000",
+  "apiBaseUrl": "http://localhost:8080/api",
+  "graphqlEndpoint": "http://localhost:8080/graphql",
+  "database": {
+    "host": "localhost",
+    "port": 5432,
+    "name": "test_db_dev",
+    "user": "dev_user"
+  },
+  "features": {
+    "enableVisualTesting": true,
+    "enableAccessibilityTesting": true,
+    "enablePerformanceTesting": false,
+    "enableMocking": true,
+    "enableVideoRecording": false,
+    "enableTracing": true
+  },
+  "timeouts": {
+    "default": 30000,
+    "navigation": 30000,
+    "action": 10000
+  },
+  "retries": {
+    "maxTestRetries": 0,
+    "flakyTestRetries": 0
+  },
+  "parallelization": {
+    "workers": 4
+  }
+}

@@ -1,0 +1,883 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Graphify Local Viewer</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #0b1020;
+        --panel: rgba(12, 18, 36, 0.95);
+        --panel-border: rgba(148, 163, 184, 0.22);
+        --text: #e2e8f0;
+        --muted: #94a3b8;
+        --edge: rgba(148, 163, 184, 0.35);
+        --edge-highlight: rgba(34, 211, 238, 0.9);
+        --doc: #60a5fa;
+        --manifest: #f59e0b;
+        --report: #34d399;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        height: 100%;
+        background: radial-gradient(circle at 10% 0%, #1d2b4d 0%, var(--bg) 60%);
+        color: var(--text);
+        font-family:
+          Inter,
+          ui-sans-serif,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+
+      #app {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 400px;
+        width: 100%;
+        height: 100%;
+      }
+
+      #graphWrap {
+        position: relative;
+        overflow: hidden;
+      }
+
+      #graph {
+        width: 100%;
+        height: 100%;
+      }
+
+      .panel {
+        border-left: 1px solid var(--panel-border);
+        background: var(--panel);
+        padding: 16px;
+        overflow: auto;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 20px;
+      }
+
+      h2 {
+        font-size: 13px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        color: var(--muted);
+        margin: 18px 0 8px;
+      }
+
+      .subtle {
+        color: var(--muted);
+        margin-top: 6px;
+        font-size: 12px;
+      }
+
+      .cards {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 10px;
+      }
+
+      .card {
+        background: rgba(15, 23, 42, 0.8);
+        border: 1px solid var(--panel-border);
+        border-radius: 10px;
+        padding: 8px 10px;
+      }
+
+      .label {
+        font-size: 11px;
+        color: var(--muted);
+        text-transform: uppercase;
+      }
+
+      .value {
+        margin-top: 4px;
+        font-size: 20px;
+        font-weight: 700;
+      }
+
+      .control {
+        margin-bottom: 8px;
+      }
+
+      input,
+      select {
+        width: 100%;
+        border: 1px solid var(--panel-border);
+        background: rgba(15, 23, 42, 0.8);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px;
+      }
+
+      .checks {
+        display: grid;
+        gap: 6px;
+      }
+
+      .checks label {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 13px;
+      }
+
+      .legend {
+        display: grid;
+        gap: 6px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 13px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 999px;
+      }
+
+      .tooltip {
+        position: absolute;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.12s ease;
+        border: 1px solid var(--panel-border);
+        border-radius: 8px;
+        background: rgba(15, 23, 42, 0.95);
+        padding: 8px 10px;
+        font-size: 12px;
+        max-width: 340px;
+      }
+
+      .kbd {
+        border: 1px solid var(--panel-border);
+        border-bottom-width: 2px;
+        border-radius: 6px;
+        padding: 1px 6px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+
+      .hint {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+      }
+
+      .actions {
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .btn {
+        border: 1px solid var(--panel-border);
+        background: rgba(15, 23, 42, 0.8);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px 10px;
+        font-size: 12px;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background: rgba(30, 41, 59, 0.95);
+      }
+
+      .node-label {
+        font-size: 11px;
+        fill: var(--text);
+        text-anchor: middle;
+        pointer-events: none;
+      }
+
+      .edge-label {
+        font-size: 10px;
+        fill: var(--muted);
+        text-anchor: middle;
+        pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="app">
+      <div id="graphWrap">
+        <svg id="graph" aria-label="Graphify local graph"></svg>
+        <div id="tooltip" class="tooltip"></div>
+      </div>
+
+      <aside class="panel">
+        <h1>Graphify Local</h1>
+        <div class="subtle">Interactive local graph (search, filters, focus, edge toggles)</div>
+
+        <div class="cards" id="summary"></div>
+
+        <h2>Search</h2>
+        <div class="control">
+          <input id="search" type="text" placeholder="Search node id/title/file..." />
+        </div>
+
+        <h2>Focus Node</h2>
+        <div class="control">
+          <select id="focusSelect">
+            <option value="">No focus</option>
+          </select>
+        </div>
+
+        <h2>Node Types</h2>
+        <div class="checks" id="typeFilters"></div>
+
+        <h2>Edge Types</h2>
+        <div class="checks" id="edgeFilters"></div>
+
+        <h2>Legend</h2>
+        <div class="legend">
+          <div class="legend-item"><span class="dot" style="background: var(--doc)"></span> document</div>
+          <div class="legend-item"><span class="dot" style="background: var(--manifest)"></span> manifest</div>
+          <div class="legend-item"><span class="dot" style="background: var(--report)"></span> report</div>
+        </div>
+
+        <div class="hint">
+          Drag nodes to reposition. Scroll to zoom. Drag background to pan. Press
+          <span class="kbd">r</span> to reset view.
+        </div>
+
+        <div class="actions">
+          <button id="zoomIn" class="btn" type="button">Zoom +</button>
+          <button id="zoomOut" class="btn" type="button">Zoom -</button>
+          <button id="fitView" class="btn" type="button">Fit</button>
+        </div>
+      </aside>
+    </div>
+
+    <script src="./local-graph-data.js"></script>
+    <script>
+      const svg = document.getElementById('graph');
+      const tooltip = document.getElementById('tooltip');
+      const summary = document.getElementById('summary');
+      const searchInput = document.getElementById('search');
+      const focusSelect = document.getElementById('focusSelect');
+      const typeFilters = document.getElementById('typeFilters');
+      const edgeFilters = document.getElementById('edgeFilters');
+      const zoomInBtn = document.getElementById('zoomIn');
+      const zoomOutBtn = document.getElementById('zoomOut');
+      const fitViewBtn = document.getElementById('fitView');
+
+      const COLORS = {
+        document: getComputedStyle(document.documentElement).getPropertyValue('--doc').trim(),
+        manifest: getComputedStyle(document.documentElement).getPropertyValue('--manifest').trim(),
+        report: getComputedStyle(document.documentElement).getPropertyValue('--report').trim(),
+        edge: getComputedStyle(document.documentElement).getPropertyValue('--edge').trim(),
+        edgeHighlight: getComputedStyle(document.documentElement)
+          .getPropertyValue('--edge-highlight')
+          .trim(),
+      };
+
+      const state = {
+        graph: null,
+        nodes: [],
+        edges: [],
+        nodeMap: new Map(),
+        adjacency: new Map(),
+        activeNodeTypes: new Set(),
+        activeEdgeTypes: new Set(),
+        query: '',
+        focusId: '',
+        transform: { x: 0, y: 0, scale: 1 },
+      };
+
+      const clamp = (value, min, max) => Math.max(min, Math.min(max, value));
+
+      const escapeHtml = value =>
+        String(value)
+          .replaceAll('&', '&amp;')
+          .replaceAll('<', '&lt;')
+          .replaceAll('>', '&gt;')
+          .replaceAll('"', '&quot;');
+
+      const setSummary = graph => {
+        summary.innerHTML = `
+          <div class="card"><div class="label">Nodes</div><div class="value">${graph.summary.nodes}</div></div>
+          <div class="card"><div class="label">Edges</div><div class="value">${graph.summary.edges}</div></div>
+          <div class="card"><div class="label">Documents</div><div class="value">${graph.summary.documents}</div></div>
+          <div class="card"><div class="label">Manifests</div><div class="value">${graph.summary.manifests}</div></div>
+        `;
+      };
+
+      const width = () => svg.clientWidth || window.innerWidth - 400;
+      const height = () => svg.clientHeight || window.innerHeight;
+
+      const createSvgEl = (name, attrs = {}) => {
+        const el = document.createElementNS('http://www.w3.org/2000/svg', name);
+        for (const [key, value] of Object.entries(attrs)) {
+          el.setAttribute(key, String(value));
+        }
+        return el;
+      };
+
+      const initControls = () => {
+        const nodeTypes = [...new Set(state.nodes.map(n => n.type))].sort();
+        const edgeTypes = [...new Set(state.edges.map(e => e.relation))].sort();
+
+        state.activeNodeTypes = new Set(nodeTypes);
+        state.activeEdgeTypes = new Set(edgeTypes);
+
+        typeFilters.innerHTML = '';
+        nodeTypes.forEach(type => {
+          const label = document.createElement('label');
+          label.innerHTML = `<input type="checkbox" checked /> ${escapeHtml(type)}`;
+          typeFilters.appendChild(label);
+          label.querySelector('input').addEventListener('change', event => {
+            if (event.target.checked) {
+              state.activeNodeTypes.add(type);
+            } else {
+              state.activeNodeTypes.delete(type);
+            }
+            render();
+          });
+        });
+
+        edgeFilters.innerHTML = '';
+        edgeTypes.forEach(type => {
+          const label = document.createElement('label');
+          label.innerHTML = `<input type="checkbox" checked /> ${escapeHtml(type)}`;
+          edgeFilters.appendChild(label);
+          label.querySelector('input').addEventListener('change', event => {
+            if (event.target.checked) {
+              state.activeEdgeTypes.add(type);
+            } else {
+              state.activeEdgeTypes.delete(type);
+            }
+            render();
+          });
+        });
+
+        const options = ['<option value="">No focus</option>'];
+        [...state.nodes]
+          .sort((a, b) => a.title.localeCompare(b.title))
+          .forEach(node => {
+            options.push(
+              `<option value="${escapeHtml(node.id)}">${escapeHtml(node.title)} (${escapeHtml(node.id)})</option>`
+            );
+          });
+        focusSelect.innerHTML = options.join('');
+      };
+
+      const buildAdjacency = () => {
+        state.adjacency = new Map();
+        state.nodes.forEach(node => state.adjacency.set(node.id, new Set()));
+        state.edges.forEach(edge => {
+          if (!state.adjacency.has(edge.from)) {
+            state.adjacency.set(edge.from, new Set());
+          }
+          state.adjacency.get(edge.from).add(edge.to);
+
+          if (!state.adjacency.has(edge.to)) {
+            state.adjacency.set(edge.to, new Set());
+          }
+          state.adjacency.get(edge.to).add(edge.from);
+        });
+      };
+
+      const initializeNodePositions = () => {
+        const w = width();
+        const h = height();
+        state.nodes.forEach((node, i) => {
+          const angle = (Math.PI * 2 * i) / Math.max(state.nodes.length, 1);
+          const radius = Math.min(w, h) * 0.28;
+          node.x = w / 2 + Math.cos(angle) * radius;
+          node.y = h / 2 + Math.sin(angle) * radius;
+          node.vx = 0;
+          node.vy = 0;
+          node.fx = null;
+          node.fy = null;
+        });
+      };
+
+      const fitGraphToViewport = () => {
+        if (!state.nodes.length) {
+          state.transform = { x: 0, y: 0, scale: 1 };
+          return;
+        }
+
+        const xs = state.nodes.map(node => node.x);
+        const ys = state.nodes.map(node => node.y);
+        const minX = Math.min(...xs);
+        const maxX = Math.max(...xs);
+        const minY = Math.min(...ys);
+        const maxY = Math.max(...ys);
+
+        const graphW = Math.max(1, maxX - minX);
+        const graphH = Math.max(1, maxY - minY);
+        const padding = 80;
+        const vw = Math.max(1, width() - padding * 2);
+        const vh = Math.max(1, height() - padding * 2);
+
+        const scale = clamp(Math.min(vw / graphW, vh / graphH), 0.35, 2.2);
+        const centerX = (minX + maxX) / 2;
+        const centerY = (minY + maxY) / 2;
+
+        state.transform = {
+          scale,
+          x: width() / 2 - centerX * scale,
+          y: height() / 2 - centerY * scale,
+        };
+      };
+
+      const runSimulation = () => {
+        const iterations = 220;
+        const springLength = 145;
+        const springStrength = 0.018;
+        const chargeStrength = 4500;
+        const damping = 0.86;
+        const centerStrength = 0.003;
+        const w = width();
+        const h = height();
+
+        for (let step = 0; step < iterations; step++) {
+          for (let i = 0; i < state.nodes.length; i++) {
+            for (let j = i + 1; j < state.nodes.length; j++) {
+              const a = state.nodes[i];
+              const b = state.nodes[j];
+              let dx = a.x - b.x;
+              let dy = a.y - b.y;
+              const distSq = dx * dx + dy * dy + 0.01;
+              const force = chargeStrength / distSq;
+              const dist = Math.sqrt(distSq);
+              dx /= dist;
+              dy /= dist;
+              a.vx += dx * force * 0.001;
+              a.vy += dy * force * 0.001;
+              b.vx -= dx * force * 0.001;
+              b.vy -= dy * force * 0.001;
+            }
+          }
+
+          state.edges.forEach(edge => {
+            const source = state.nodeMap.get(edge.from);
+            const target = state.nodeMap.get(edge.to) || state.nodes.find(n => n.filePath === edge.to);
+            if (!source || !target) {
+              return;
+            }
+            const dx = target.x - source.x;
+            const dy = target.y - source.y;
+            const distance = Math.sqrt(dx * dx + dy * dy) || 1;
+            const delta = distance - springLength;
+            const force = delta * springStrength;
+            const ux = dx / distance;
+            const uy = dy / distance;
+
+            source.vx += ux * force;
+            source.vy += uy * force;
+            target.vx -= ux * force;
+            target.vy -= uy * force;
+          });
+
+          state.nodes.forEach(node => {
+            if (node.fx !== null && node.fy !== null) {
+              node.x = node.fx;
+              node.y = node.fy;
+              node.vx = 0;
+              node.vy = 0;
+              return;
+            }
+            node.vx += (w / 2 - node.x) * centerStrength;
+            node.vy += (h / 2 - node.y) * centerStrength;
+            node.vx *= damping;
+            node.vy *= damping;
+            node.x += node.vx;
+            node.y += node.vy;
+          });
+        }
+      };
+
+      const nodeMatchesSearch = node => {
+        if (!state.query) {
+          return true;
+        }
+        const q = state.query.toLowerCase();
+        return (
+          node.id.toLowerCase().includes(q) ||
+          node.title.toLowerCase().includes(q) ||
+          node.filePath.toLowerCase().includes(q)
+        );
+      };
+
+      const nodeInFocusNeighborhood = node => {
+        if (!state.focusId) {
+          return true;
+        }
+        if (node.id === state.focusId) {
+          return true;
+        }
+        const neighbors = state.adjacency.get(state.focusId);
+        return neighbors ? neighbors.has(node.id) : false;
+      };
+
+      const isNodeVisible = node =>
+        state.activeNodeTypes.has(node.type) && nodeMatchesSearch(node) && nodeInFocusNeighborhood(node);
+
+      const isEdgeVisible = edge => {
+        if (!state.activeEdgeTypes.has(edge.relation)) {
+          return false;
+        }
+        const source = state.nodeMap.get(edge.from);
+        const target = state.nodeMap.get(edge.to) || state.nodes.find(n => n.filePath === edge.to);
+        if (!source || !target) {
+          return false;
+        }
+        return isNodeVisible(source) && isNodeVisible(target);
+      };
+
+      const clearSvg = () => {
+        while (svg.firstChild) {
+          svg.removeChild(svg.firstChild);
+        }
+      };
+
+      const showTooltip = (event, node) => {
+        tooltip.innerHTML = `<strong>${escapeHtml(node.title)}</strong><br/>${escapeHtml(node.id)}<br/>${escapeHtml(node.filePath)}`;
+        tooltip.style.left = `${event.offsetX + 8}px`;
+        tooltip.style.top = `${event.offsetY + 8}px`;
+        tooltip.style.opacity = '1';
+      };
+
+      const hideTooltip = () => {
+        tooltip.style.opacity = '0';
+      };
+
+      const screenToWorld = (sx, sy) => ({
+        x: (sx - state.transform.x) / state.transform.scale,
+        y: (sy - state.transform.y) / state.transform.scale,
+      });
+
+      const render = () => {
+        clearSvg();
+
+        const defs = createSvgEl('defs');
+        const marker = createSvgEl('marker', {
+          id: 'arrow',
+          viewBox: '0 0 10 10',
+          refX: 8,
+          refY: 5,
+          markerWidth: 6,
+          markerHeight: 6,
+          orient: 'auto-start-reverse',
+        });
+        marker.appendChild(createSvgEl('path', { d: 'M 0 0 L 10 5 L 0 10 z', fill: COLORS.edge }));
+        defs.appendChild(marker);
+        svg.appendChild(defs);
+
+        const zoomLayer = createSvgEl('g', {
+          transform: `translate(${state.transform.x}, ${state.transform.y}) scale(${state.transform.scale})`,
+        });
+        svg.appendChild(zoomLayer);
+
+        const edgeGroup = createSvgEl('g');
+        zoomLayer.appendChild(edgeGroup);
+
+        state.edges.forEach(edge => {
+          if (!isEdgeVisible(edge)) {
+            return;
+          }
+
+          const source = state.nodeMap.get(edge.from);
+          const target = state.nodeMap.get(edge.to) || state.nodes.find(n => n.filePath === edge.to);
+          if (!source || !target) {
+            return;
+          }
+
+          const highlighted = state.focusId && (edge.from === state.focusId || edge.to === state.focusId);
+          const line = createSvgEl('line', {
+            x1: source.x,
+            y1: source.y,
+            x2: target.x,
+            y2: target.y,
+            stroke: highlighted ? COLORS.edgeHighlight : COLORS.edge,
+            'stroke-width': highlighted ? 2.4 : 1.4,
+            'marker-end': 'url(#arrow)',
+            opacity: highlighted || !state.focusId ? 1 : 0.35,
+          });
+          edgeGroup.appendChild(line);
+
+          const label = createSvgEl('text', {
+            x: (source.x + target.x) / 2,
+            y: (source.y + target.y) / 2 - 5,
+            class: 'edge-label',
+            opacity: state.transform.scale > 0.65 ? 0.95 : 0,
+          });
+          label.textContent = edge.relation;
+          edgeGroup.appendChild(label);
+        });
+
+        const nodeGroup = createSvgEl('g');
+        zoomLayer.appendChild(nodeGroup);
+
+        state.nodes.forEach(node => {
+          if (!isNodeVisible(node)) {
+            return;
+          }
+
+          const focused = state.focusId === node.id;
+          const g = createSvgEl('g', {
+            transform: `translate(${node.x}, ${node.y})`,
+            style: 'cursor: grab;',
+            opacity: !state.focusId || focused || nodeInFocusNeighborhood(node) ? 1 : 0.45,
+          });
+
+          const outer = createSvgEl('circle', {
+            r: focused ? 20 : 15,
+            fill: 'rgba(255,255,255,0.03)',
+            stroke: COLORS[node.type] || COLORS.document,
+            'stroke-width': focused ? 3.2 : 2,
+          });
+
+          const core = createSvgEl('circle', {
+            r: focused ? 11 : 8,
+            fill: COLORS[node.type] || COLORS.document,
+          });
+
+          const label = createSvgEl('text', {
+            y: focused ? 30 : 24,
+            class: 'node-label',
+            opacity: focused || state.transform.scale > 1.15 ? 1 : 0,
+          });
+          label.textContent = node.title.length > 30 ? `${node.title.slice(0, 27)}...` : node.title;
+
+          g.appendChild(outer);
+          g.appendChild(core);
+          g.appendChild(label);
+
+          let dragging = false;
+          const onMouseMove = event => {
+            if (!dragging) {
+              return;
+            }
+            const point = screenToWorld(event.offsetX, event.offsetY);
+            node.fx = point.x;
+            node.fy = point.y;
+            node.x = point.x;
+            node.y = point.y;
+            render();
+          };
+
+          const onMouseUp = () => {
+            if (!dragging) {
+              return;
+            }
+            dragging = false;
+            node.fx = null;
+            node.fy = null;
+            window.removeEventListener('mousemove', onMouseMove);
+            window.removeEventListener('mouseup', onMouseUp);
+            runSimulation();
+            render();
+          };
+
+          g.addEventListener('mousedown', event => {
+            event.stopPropagation();
+            dragging = true;
+            g.style.cursor = 'grabbing';
+            const point = screenToWorld(event.offsetX, event.offsetY);
+            node.fx = point.x;
+            node.fy = point.y;
+            window.addEventListener('mousemove', onMouseMove);
+            window.addEventListener(
+              'mouseup',
+              () => {
+                g.style.cursor = 'grab';
+              },
+              { once: true }
+            );
+            window.addEventListener('mouseup', onMouseUp);
+          });
+
+          g.addEventListener('dblclick', event => {
+            event.stopPropagation();
+            state.focusId = node.id;
+            focusSelect.value = node.id;
+            render();
+          });
+
+          g.addEventListener('mouseenter', event => showTooltip(event, node));
+          g.addEventListener('mousemove', event => showTooltip(event, node));
+          g.addEventListener('mouseleave', hideTooltip);
+
+          nodeGroup.appendChild(g);
+        });
+      };
+
+      const bindPanZoom = () => {
+        let panning = false;
+        let startX = 0;
+        let startY = 0;
+
+        const zoomAt = (screenX, screenY, factor) => {
+          const rect = svg.getBoundingClientRect();
+          const sx = screenX - rect.left;
+          const sy = screenY - rect.top;
+
+          const prevScale = state.transform.scale;
+          const nextScale = clamp(prevScale * factor, 0.2, 4);
+          if (nextScale === prevScale) {
+            return;
+          }
+
+          const worldX = (sx - state.transform.x) / prevScale;
+          const worldY = (sy - state.transform.y) / prevScale;
+
+          state.transform.scale = nextScale;
+          state.transform.x = sx - worldX * nextScale;
+          state.transform.y = sy - worldY * nextScale;
+          render();
+        };
+
+        svg.addEventListener('mousedown', event => {
+          const isNode = event.target.closest('g') && event.target.closest('.node-label') === null;
+          if (isNode && event.target.tagName !== 'svg') {
+            return;
+          }
+          panning = true;
+          startX = event.clientX - state.transform.x;
+          startY = event.clientY - state.transform.y;
+        });
+
+        window.addEventListener('mousemove', event => {
+          if (!panning) {
+            return;
+          }
+          state.transform.x = event.clientX - startX;
+          state.transform.y = event.clientY - startY;
+          render();
+        });
+
+        window.addEventListener('mouseup', () => {
+          panning = false;
+        });
+
+        svg.addEventListener(
+          'wheel',
+          event => {
+            event.preventDefault();
+            const delta = event.deltaY < 0 ? 1.12 : 0.89;
+            zoomAt(event.clientX, event.clientY, delta);
+          },
+          { passive: false }
+        );
+
+        zoomInBtn.addEventListener('click', () => zoomAt(width() / 2, height() / 2, 1.2));
+        zoomOutBtn.addEventListener('click', () => zoomAt(width() / 2, height() / 2, 0.84));
+        fitViewBtn.addEventListener('click', () => {
+          fitGraphToViewport();
+          render();
+        });
+
+        window.addEventListener('keydown', event => {
+          if (event.key === '+' || event.key === '=') {
+            zoomAt(width() / 2, height() / 2, 1.2);
+            return;
+          }
+
+          if (event.key === '-') {
+            zoomAt(width() / 2, height() / 2, 0.84);
+            return;
+          }
+
+          if (event.key.toLowerCase() === 'r') {
+            fitGraphToViewport();
+            state.focusId = '';
+            focusSelect.value = '';
+            render();
+          }
+        });
+      };
+
+      const bindFilters = () => {
+        searchInput.addEventListener('input', () => {
+          state.query = searchInput.value.trim();
+          render();
+        });
+
+        focusSelect.addEventListener('change', () => {
+          state.focusId = focusSelect.value;
+          render();
+        });
+      };
+
+      const loadGraph = async () => {
+        if (window.__KB_GRAPH__ && typeof window.__KB_GRAPH__ === 'object') {
+          return window.__KB_GRAPH__;
+        }
+
+        const candidates = ['/graph.json', './local-graph.json', '../output/local-graph.json'];
+
+        for (const candidate of candidates) {
+          try {
+            const response = await fetch(candidate);
+            if (!response.ok) {
+              continue;
+            }
+            return await response.json();
+          } catch {
+            // Try next source
+          }
+        }
+
+        throw new Error('Unable to load graph data from known sources.');
+      };
+
+      const init = async () => {
+        const graph = await loadGraph();
+
+        state.graph = graph;
+        state.nodes = graph.nodes.map(n => ({ ...n }));
+        state.edges = graph.edges.map(e => ({ ...e }));
+        state.nodeMap = new Map(state.nodes.map(node => [node.id, node]));
+
+        setSummary(graph);
+        initializeNodePositions();
+        buildAdjacency();
+        runSimulation();
+        fitGraphToViewport();
+        initControls();
+        bindFilters();
+        bindPanZoom();
+        render();
+      };
+
+      window.addEventListener('resize', () => {
+        if (!state.graph) {
+          return;
+        }
+        runSimulation();
+        render();
+      });
+
+      init().catch(error => {
+        summary.innerHTML =
+          '<div class="card"><div class="label">Error</div><div class="value">Load failed</div></div>';
+        console.error(error);
+      });
+    </script>
+  </body>
+</html>

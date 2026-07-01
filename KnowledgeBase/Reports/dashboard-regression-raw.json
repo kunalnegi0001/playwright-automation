@@ -1,0 +1,806 @@
+🚀 Starting Global Setup...
+Loaded 1 sessions from disk
+Session pool initialized
+✅ Global Setup Complete
+
+
+🧹 Starting Global Teardown...
+Saved 1 sessions to disk
+📊 Generating reports...
+🗑️  Cleaning up temporary files...
+✅ Global Teardown Complete
+{
+  "config": {
+    "configFile": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/playwright.config.ts",
+    "rootDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+    "forbidOnly": false,
+    "fullyParallel": false,
+    "globalSetup": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/src/resources/fixtures/global-setup.ts",
+    "globalTeardown": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/src/resources/fixtures/global-teardown.ts",
+    "globalTimeout": 0,
+    "grep": {},
+    "grepInvert": null,
+    "maxFailures": 0,
+    "metadata": {
+      "actualWorkers": 1
+    },
+    "preserveOutput": "always",
+    "projects": [
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "setup",
+        "name": "setup",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/auth.setup.ts"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "bdd",
+        "name": "bdd",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/ui/all",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "bdd-examples",
+        "name": "bdd-examples",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/ui/examples",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "bdd-framework",
+        "name": "bdd-framework",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/ui/framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "api-bdd",
+        "name": "api-bdd",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/api/all",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "api-bdd-examples",
+        "name": "api-bdd-examples",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/api/examples",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "api-bdd-framework",
+        "name": "api-bdd-framework",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/.features-gen/api/framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "**/*.spec.js"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "visual",
+        "name": "visual",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/visual\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "visual-examples",
+        "name": "visual-examples",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/visual\\/__examples-.*\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "visual-framework",
+        "name": "visual-framework",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/__examples-*/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/visual\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "accessibility",
+        "name": "accessibility",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/accessibility\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "accessibility-examples",
+        "name": "accessibility-examples",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/accessibility\\/__examples-.*\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "accessibility-framework",
+        "name": "accessibility-framework",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/__examples-*/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/accessibility\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "performance",
+        "name": "performance",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/performance\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "performance-examples",
+        "name": "performance-examples",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/performance\\/__examples-.*\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "performance-framework",
+        "name": "performance-framework",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/__examples-*/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/performance\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "lighthouse",
+        "name": "lighthouse",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/node_modules/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/performance\\/.*\\.spec\\.ts/"
+        ],
+        "timeout": 30000
+      },
+      {
+        "outputDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework/test-results",
+        "repeatEach": 1,
+        "retries": 0,
+        "metadata": {
+          "actualWorkers": 1
+        },
+        "id": "smoke",
+        "name": "smoke",
+        "testDir": "/Users/kunalnegi/Desktop/New/18June2026/playwright-enterprise-framework",
+        "testIgnore": [
+          "**/__examples-*/**"
+        ],
+        "testMatch": [
+          "/src\\/tests\\/.+\\/.*\\.(spec\\.ts|spec\\.js)$/"
+        ],
+        "timeout": 30000
+      }
+    ],
+    "quiet": false,
+    "reporter": [
+      [
+        "json"
+      ]
+    ],
+    "reportSlowTests": {
+      "max": 5,
+      "threshold": 300000
+    },
+    "runAgents": "none",
+    "shard": null,
+    "tags": [],
+    "updateSnapshots": "missing",
+    "updateSourceMethod": "patch",
+    "version": "1.58.2",
+    "workers": 4,
+    "webServer": null
+  },
+  "suites": [
+    {
+      "title": "src/tests/auth.setup.ts",
+      "file": "src/tests/auth.setup.ts",
+      "column": 0,
+      "line": 0,
+      "specs": [
+        {
+          "title": "authenticate",
+          "ok": true,
+          "tags": [],
+          "tests": [
+            {
+              "timeout": 30000,
+              "annotations": [],
+              "expectedStatus": "passed",
+              "projectId": "setup",
+              "projectName": "setup",
+              "results": [
+                {
+                  "workerIndex": 0,
+                  "parallelIndex": 0,
+                  "status": "passed",
+                  "duration": 4910,
+                  "errors": [],
+                  "stdout": [],
+                  "stderr": [],
+                  "retry": 0,
+                  "startTime": "2026-06-19T05:55:38.693Z",
+                  "annotations": [],
+                  "attachments": []
+                }
+              ],
+              "status": "expected"
+            }
+          ],
+          "id": "62f142dd34e36a824fbd-a2d7fd08cedec566ae26",
+          "file": "src/tests/auth.setup.ts",
+          "line": 8,
+          "column": 1
+        }
+      ]
+    },
+    {
+      "title": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+      "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+      "column": 0,
+      "line": 0,
+      "specs": [],
+      "suites": [
+        {
+          "title": "OrangeHRM Dashboard",
+          "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+          "line": 4,
+          "column": 6,
+          "specs": [
+            {
+              "title": "Quick Launch navigation - Assign Leave",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6717,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"Assign Leave\" quick launch button",
+                          "duration": 1902
+                        },
+                        {
+                          "title": "Then the URL should contain \"/leave/assignLeave\"",
+                          "duration": 2
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:55:44.645Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-67018f3811345ccab3f8",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 21,
+              "column": 3
+            },
+            {
+              "title": "Quick Launch navigation - Leave List",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7933,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"Leave List\" quick launch button",
+                          "duration": 2551
+                        },
+                        {
+                          "title": "Then the URL should contain \"/leave/viewLeaveList\"",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:55:51.701Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-266b6be918471f228696",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 26,
+              "column": 3
+            },
+            {
+              "title": "Quick Launch navigation - Apply Leave",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6527,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"Apply Leave\" quick launch button",
+                          "duration": 2089
+                        },
+                        {
+                          "title": "Then the URL should contain \"/leave/applyLeave\"",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:55:59.640Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-57939750c8ef1901951c",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 31,
+              "column": 3
+            },
+            {
+              "title": "Quick Launch navigation - My Leave",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 8213,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"My Leave\" quick launch button",
+                          "duration": 3143
+                        },
+                        {
+                          "title": "Then the URL should contain \"/leave\"",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:56:06.173Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-391e728024732204f44c",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 36,
+              "column": 3
+            },
+            {
+              "title": "Quick Launch navigation - Timesheets",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7020,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"Timesheets\" quick launch button",
+                          "duration": 1969
+                        },
+                        {
+                          "title": "Then the URL should contain \"/time\"",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:56:14.391Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-3b86fa390fd7cfbde9b6",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 41,
+              "column": 3
+            },
+            {
+              "title": "Quick Launch navigation - My Timesheet",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 7376,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I click the \"My Timesheet\" quick launch button",
+                          "duration": 2003
+                        },
+                        {
+                          "title": "Then the URL should contain \"/time\"",
+                          "duration": 0
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:56:21.417Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-c2790473995f13d2d6ab",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 46,
+              "column": 3
+            },
+            {
+              "title": "Sidebar search functionality",
+              "ok": true,
+              "tags": [
+                "example",
+                "dashboard",
+                "ui",
+                "regression"
+              ],
+              "tests": [
+                {
+                  "timeout": 30000,
+                  "annotations": [],
+                  "expectedStatus": "passed",
+                  "projectId": "bdd-examples",
+                  "projectName": "bdd-examples",
+                  "results": [
+                    {
+                      "workerIndex": 1,
+                      "parallelIndex": 0,
+                      "status": "passed",
+                      "duration": 6229,
+                      "errors": [],
+                      "stdout": [],
+                      "stderr": [],
+                      "retry": 0,
+                      "steps": [
+                        {
+                          "title": "When I type \"Admin\" in the sidebar search",
+                          "duration": 823
+                        },
+                        {
+                          "title": "Then only matching sidebar items should be visible",
+                          "duration": 2
+                        },
+                        {
+                          "title": "When I clear the sidebar search",
+                          "duration": 10
+                        },
+                        {
+                          "title": "Then all 12 sidebar menu items should be visible",
+                          "duration": 1
+                        },
+                        {
+                          "title": "When I type \"Le\" in the sidebar search",
+                          "duration": 2
+                        },
+                        {
+                          "title": "And I click \"Leave\" from the filtered sidebar",
+                          "duration": 713
+                        },
+                        {
+                          "title": "Then the URL should contain \"/leave\"",
+                          "duration": 1
+                        }
+                      ],
+                      "startTime": "2026-06-19T05:56:28.798Z",
+                      "annotations": [],
+                      "attachments": []
+                    }
+                  ],
+                  "status": "expected"
+                }
+              ],
+              "id": "97ccabd08ebbe6256628-ab2ef4154860e7b90fa0",
+              "file": ".features-gen/ui/examples/src/tests/UI/__examples-orangehrm__/dashboard/features/dashboard.feature.spec.js",
+              "line": 51,
+              "column": 3
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "stats": {
+    "startTime": "2026-06-19T05:55:37.998Z",
+    "duration": 57066.964,
+    "expected": 8,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  }
+}

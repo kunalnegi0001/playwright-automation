@@ -1,0 +1,53 @@
+{
+  "orders": [
+    {
+      "id": "order-001",
+      "userId": "user-001",
+      "status": "pending",
+      "items": [
+        {
+          "productId": "prod-001",
+          "quantity": 1,
+          "price": 1299.99
+        },
+        {
+          "productId": "prod-002",
+          "quantity": 2,
+          "price": 29.99
+        }
+      ],
+      "total": 1359.97,
+      "currency": "USD",
+      "shippingAddress": {
+        "street": "123 Main St",
+        "city": "San Francisco",
+        "state": "CA",
+        "zipCode": "94105",
+        "country": "USA"
+      }
+    },
+    {
+      "id": "order-002",
+      "userId": "user-002",
+      "status": "completed",
+      "items": [
+        {
+          "productId": "prod-003",
+          "quantity": 5,
+          "price": 9.99
+        }
+      ],
+      "total": 49.95,
+      "currency": "USD",
+      "completedAt": "2026-02-18T10:30:00Z"
+    }
+  ],
+  "orderStatuses": [
+    "pending",
+    "processing",
+    "shipped",
+    "delivered",
+    "cancelled",
+    "refunded"
+  ]
+}

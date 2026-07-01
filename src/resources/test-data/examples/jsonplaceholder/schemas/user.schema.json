@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "User",
+  "type": "object",
+  "required": ["id", "email", "firstName", "lastName", "role"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^user-[0-9]{3,}$",
+      "description": "Unique user identifier"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "description": "User email address"
+    },
+    "firstName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "description": "User first name"
+    },
+    "lastName": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 50,
+      "description": "User last name"
+    },
+    "role": {
+      "type": "string",
+      "enum": ["user", "admin", "moderator"],
+      "description": "User role"
+    },
+    "status": {
+      "type": "string",
+      "enum": ["active", "inactive", "blocked", "pending"],
+      "default": "active",
+      "description": "User account status"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Account creation timestamp"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  }
+}

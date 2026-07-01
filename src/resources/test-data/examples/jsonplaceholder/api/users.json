@@ -1,0 +1,53 @@
+{
+  "validUsers": [
+    {
+      "id": "user-001",
+      "email": "john.doe@example.com",
+      "password": "SecurePass123!",
+      "firstName": "John",
+      "lastName": "Doe",
+      "role": "user",
+      "status": "active"
+    },
+    {
+      "id": "user-002",
+      "email": "jane.smith@example.com",
+      "password": "SecurePass456!",
+      "firstName": "Jane",
+      "lastName": "Smith",
+      "role": "user",
+      "status": "active"
+    }
+  ],
+  "adminUsers": [
+    {
+      "id": "admin-001",
+      "email": "admin@example.com",
+      "password": "AdminPass789!",
+      "firstName": "Admin",
+      "lastName": "User",
+      "role": "admin",
+      "status": "active"
+    }
+  ],
+  "invalidUsers": [
+    {
+      "email": "invalid@example.com",
+      "password": "WrongPassword",
+      "expectedError": "Invalid credentials"
+    },
+    {
+      "email": "blocked@example.com",
+      "password": "BlockedPass123!",
+      "expectedError": "Account blocked",
+      "status": "blocked"
+    }
+  ],
+  "testUsers": {
+    "sso": {
+      "email": "${SSO_EMAIL}",
+      "password": "${SSO_PASSWORD}",
+      "ssoProvider": "${SSO_PROVIDER}"
+    }
+  }
+}

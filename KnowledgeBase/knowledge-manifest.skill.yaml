@@ -1,0 +1,23 @@
+version: 1
+id: kb.flat.manifest
+name: knowledgebase-flat-manifest
+status: active
+ownerTeam: qa-leads
+scope: knowledge-files-only
+rules:
+  - "KnowledgeBase stores product/testing knowledge only."
+  - "No source-folder restructuring under src/."
+  - "Use existing tests and utilities as implementation targets."
+files:
+  - README.md
+  - product-overview.md
+  - functional-testing-knowledge.md
+  - regression-testing-knowledge.md
+  - edge-cases-and-negative-cases.md
+  - automation-generation-rules.md
+  - Graphify/README.md
+  - Graphify/docs/graphify-integration.md
+  - orangehrm/README.md
+  - orangehrm/_index.skill.yaml
+lastReviewedAt: "2026-06-18"
+nextReviewDueAt: "2026-09-18"

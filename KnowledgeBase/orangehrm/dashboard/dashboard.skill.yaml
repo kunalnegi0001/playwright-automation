@@ -1,0 +1,30 @@
+id: kb.orangehrm.dashboard
+title: OrangeHRM Dashboard Knowledge
+version: 1.0.0
+status: active
+ownerTeam: qa-ui-specialists
+reviewers:
+  - qa-leads
+domain: testing
+tags:
+  - orangehrm
+  - dashboard
+  - ui
+sourcePaths:
+  - src/tests/UI/__examples-orangehrm__/dashboard
+docRef: KnowledgeBase/orangehrm/dashboard/README.md
+relations:
+  dependsOn:
+    - kb.orangehrm.index
+  relatedTo:
+    - kb.orangehrm.authentication
+  supersedes: []
+lastReviewedAt: 2026-06-18
+nextReviewDueAt: 2026-09-18
+testImpact: direct
+changeFrequency: medium
+files:
+  - orangehrm/dashboard/README.md
+  - orangehrm/dashboard/overview.md
+  - orangehrm/dashboard/widgets.md
+  - orangehrm/dashboard/navigation.md

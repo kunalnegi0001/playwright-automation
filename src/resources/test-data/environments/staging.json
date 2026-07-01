@@ -1,0 +1,32 @@
+{
+  "environment": "staging",
+  "baseUrl": "https://staging.example.com",
+  "apiBaseUrl": "https://api-staging.example.com",
+  "graphqlEndpoint": "https://api-staging.example.com/graphql",
+  "database": {
+    "host": "staging-db.example.com",
+    "port": 5432,
+    "name": "test_db_staging",
+    "user": "staging_user"
+  },
+  "features": {
+    "enableVisualTesting": true,
+    "enableAccessibilityTesting": true,
+    "enablePerformanceTesting": true,
+    "enableMocking": false,
+    "enableVideoRecording": true,
+    "enableTracing": true
+  },
+  "timeouts": {
+    "default": 45000,
+    "navigation": 45000,
+    "action": 15000
+  },
+  "retries": {
+    "maxTestRetries": 2,
+    "flakyTestRetries": 3
+  },
+  "parallelization": {
+    "workers": 8
+  }
+}

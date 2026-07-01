@@ -1,0 +1,167 @@
+- generic [ref=e2]:
+  - img "Graphify local graph" [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: indexes
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+        - generic: described-by
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - generic: Automation Generation Rules
+        - generic [ref=e57]:
+          - generic: Edge Cases and Negative Cases
+        - generic [ref=e60]:
+          - generic: Functional Testing Knowledge
+        - generic [ref=e63]:
+          - generic: Graphify Integration
+        - generic [ref=e66]:
+          - generic: Graphify
+        - generic [ref=e69]:
+          - generic: knowledgebase-flat-manifest
+        - generic [ref=e72]:
+          - generic: Knowledge Manifest
+        - generic [ref=e75]:
+          - generic: Knowledge Manifest
+        - generic [ref=e78]:
+          - generic: Authentication Edge Cases
+        - generic [ref=e81]:
+          - generic: Authentication Login Flows
+        - generic [ref=e84]:
+          - generic: Authentication Flow Overview
+        - generic [ref=e87]:
+          - generic: Authentication Knowledge Overview
+        - generic [ref=e90]:
+          - generic: Authentication Validations
+        - generic [ref=e93]:
+          - generic: Knowledge Manifest
+        - generic [ref=e96]:
+          - generic: Dashboard Navigation
+        - generic [ref=e99]:
+          - generic: Dashboard Overview
+        - generic [ref=e102]:
+          - generic: Dashboard Knowledge Overview
+        - generic [ref=e105]:
+          - generic: Dashboard Widgets
+        - generic [ref=e108]:
+          - generic: OrangeHRM Knowledge Base
+        - generic [ref=e111]:
+          - generic: Product Overview
+        - generic [ref=e114]:
+          - generic: KnowledgeBase
+        - generic [ref=e117]:
+          - generic: Regression Testing Knowledge
+        - generic [ref=e120]:
+          - generic: Local Graph Report
+  - complementary [ref=e123]:
+    - heading "Graphify Local" [level=1] [ref=e124]
+    - generic [ref=e125]: Interactive local graph (search, filters, focus, edge toggles)
+    - generic [ref=e126]:
+      - generic [ref=e127]:
+        - generic [ref=e128]: Nodes
+        - generic [ref=e129]: "23"
+      - generic [ref=e130]:
+        - generic [ref=e131]: Edges
+        - generic [ref=e132]: "47"
+      - generic [ref=e133]:
+        - generic [ref=e134]: Documents
+        - generic [ref=e135]: "18"
+      - generic [ref=e136]:
+        - generic [ref=e137]: Manifests
+        - generic [ref=e138]: "4"
+    - heading "Search" [level=2] [ref=e139]
+    - textbox "Search node id/title/file..." [ref=e141]
+    - heading "Focus Node" [level=2] [ref=e142]
+    - combobox [ref=e144]:
+      - option "No focus" [selected]
+      - option "Authentication Edge Cases (kb.orangehrm.authentication.edge-cases)"
+      - option "Authentication Flow Overview (kb.orangehrm.authentication.overview)"
+      - option "Authentication Knowledge Overview (kb.orangehrm.authentication.readme)"
+      - option "Authentication Login Flows (kb.orangehrm.authentication.login-flows)"
+      - option "Authentication Validations (kb.orangehrm.authentication.validations)"
+      - option "Automation Generation Rules (kb.automation.rules)"
+      - option "Dashboard Knowledge Overview (kb.orangehrm.dashboard.readme)"
+      - option "Dashboard Navigation (kb.orangehrm.dashboard.navigation)"
+      - option "Dashboard Overview (kb.orangehrm.dashboard.overview)"
+      - option "Dashboard Widgets (kb.orangehrm.dashboard.widgets)"
+      - option "Edge Cases and Negative Cases (kb.edge.negative)"
+      - option "Functional Testing Knowledge (kb.functional.testing)"
+      - option "Graphify (kb.README)"
+      - option "Graphify Integration (kb.graphify.integration)"
+      - option "Knowledge Manifest (kb.orangehrm.index)"
+      - option "Knowledge Manifest (kb.orangehrm.authentication)"
+      - option "Knowledge Manifest (kb.orangehrm.dashboard)"
+      - option "KnowledgeBase (kb.README)"
+      - option "knowledgebase-flat-manifest (kb.knowledgebase.flat.manifest)"
+      - option "Local Graph Report (kb.local.graph.report)"
+      - option "OrangeHRM Knowledge Base (kb.orangehrm.index)"
+      - option "Product Overview (kb.product.overview)"
+      - option "Regression Testing Knowledge (kb.regression.testing)"
+    - heading "Node Types" [level=2] [ref=e145]
+    - generic [ref=e146]:
+      - generic [ref=e147]:
+        - checkbox "document" [checked] [ref=e148]
+        - text: document
+      - generic [ref=e149]:
+        - checkbox "manifest" [checked] [ref=e150]
+        - text: manifest
+      - generic [ref=e151]:
+        - checkbox "report" [checked] [ref=e152]
+        - text: report
+    - heading "Edge Types" [level=2] [ref=e153]
+    - generic [ref=e154]:
+      - generic [ref=e155]:
+        - checkbox "described-by" [checked] [ref=e156]
+        - text: described-by
+      - generic [ref=e157]:
+        - checkbox "indexes" [checked] [ref=e158]
+        - text: indexes
+    - heading "Legend" [level=2] [ref=e159]
+    - generic [ref=e160]:
+      - generic [ref=e161]: document
+      - generic [ref=e163]: manifest
+      - generic [ref=e165]: report
+    - generic [ref=e167]: Drag nodes to reposition. Scroll to zoom. Drag background to pan. Press r to reset view.

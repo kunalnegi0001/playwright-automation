@@ -1,0 +1,47 @@
+{
+  "products": [
+    {
+      "id": "prod-001",
+      "name": "Laptop Pro 15",
+      "category": "electronics",
+      "price": 1299.99,
+      "currency": "USD",
+      "stock": 50,
+      "sku": "LAP-PRO-15",
+      "description": "High-performance laptop",
+      "specifications": {
+        "processor": "Intel i7",
+        "ram": "16GB",
+        "storage": "512GB SSD"
+      }
+    },
+    {
+      "id": "prod-002",
+      "name": "Wireless Mouse",
+      "category": "accessories",
+      "price": 29.99,
+      "currency": "USD",
+      "stock": 200,
+      "sku": "MOUSE-WL-01",
+      "description": "Ergonomic wireless mouse"
+    },
+    {
+      "id": "prod-003",
+      "name": "USB-C Cable",
+      "category": "accessories",
+      "price": 9.99,
+      "currency": "USD",
+      "stock": 500,
+      "sku": "CABLE-USBC-1M",
+      "description": "1 meter USB-C cable"
+    }
+  ],
+  "outOfStock": [
+    {
+      "id": "prod-999",
+      "name": "Limited Edition Item",
+      "stock": 0,
+      "status": "out_of_stock"
+    }
+  ]
+}

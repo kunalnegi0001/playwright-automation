@@ -1,0 +1,164 @@
+name: ✨ Feature Request
+description: Suggest a new feature or enhancement
+title: "[Feature]: "
+labels: ["enhancement", "needs-triage"]
+assignees: []
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting a feature! Please fill out the form below.
+
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please confirm the following before submitting
+      options:
+        - label: I have searched existing issues and discussions
+          required: true
+        - label: This feature aligns with the framework's goals
+          required: true
+        - label: I have read AGENTS.md and understand the framework patterns
+          required: false
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem Statement
+      description: What problem does this feature solve?
+      placeholder: "I'm always frustrated when..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed Solution
+      description: Describe your proposed solution
+      placeholder: "I would like to see..."
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternative solutions you've considered
+      placeholder: "I also considered..."
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Feature Category
+      description: Which category does this feature belong to?
+      options:
+        - Test Framework Core
+        - UI Testing
+        - API Testing
+        - BDD/Cucumber
+        - Visual Regression
+        - Accessibility Testing
+        - Performance Testing
+        - Reporting/Metrics
+        - CI/CD Integration
+        - Developer Experience
+        - Documentation
+        - Security
+        - Configuration
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: priority
+    attributes:
+      label: Priority
+      description: How important is this feature?
+      options:
+        - "Critical - Essential for adoption"
+        - "High - Significantly improves workflow"
+        - "Medium - Nice to have"
+        - "Low - Minor enhancement"
+    validations:
+      required: true
+
+  - type: textarea
+    id: use-cases
+    attributes:
+      label: Use Cases
+      description: Provide specific use cases for this feature
+      placeholder: |
+        1. As a QA engineer, I want to...
+        2. When testing X, I need to...
+    validations:
+      required: true
+
+  - type: textarea
+    id: benefits
+    attributes:
+      label: Benefits
+      description: What are the benefits of implementing this feature?
+      placeholder: |
+        - Improves test reliability
+        - Reduces test execution time
+        - Enhances developer experience
+
+  - type: textarea
+    id: examples
+    attributes:
+      label: Code Examples
+      description: Provide code examples showing how the feature would be used
+      placeholder: |
+        ```typescript
+        // Example usage
+        await page.newFeature();
+        ```
+      render: typescript
+
+  - type: textarea
+    id: implementation
+    attributes:
+      label: Implementation Suggestions
+      description: Do you have ideas on how to implement this?
+      placeholder: "This could be implemented by..."
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Breaking Changes
+      description: Would this be a breaking change?
+      options:
+        - "No - Backward compatible"
+        - "Yes - Requires migration"
+        - "Not sure"
+    validations:
+      required: true
+
+  - type: textarea
+    id: migration
+    attributes:
+      label: Migration Strategy
+      description: If breaking, how should users migrate?
+      placeholder: "If this is a breaking change, describe migration steps..."
+
+  - type: checkboxes
+    id: contribution
+    attributes:
+      label: Contribution
+      description: Are you willing to help implement this?
+      options:
+        - label: I am willing to submit a PR to implement this feature
+          required: false
+        - label: I am willing to write tests for this feature
+          required: false
+        - label: I am willing to write documentation for this feature
+          required: false
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional Context
+      description: Any other information about the feature request
+      placeholder: "Add any other context, screenshots, or references..."

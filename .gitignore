@@ -1,0 +1,213 @@
+# Dependencies
+node_modules/
+yarn.lock
+package-lock.json
+# pnpm-lock.yaml should be committed for reproducible builds
+.pnpm-store/
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.development
+.env.staging
+.env.production
+
+# Playwright Test Results
+test-results/
+playwright-report/
+playwright/.cache/
+playwright-results/
+
+# Allure Reports
+allure-results/
+allure-report/
+allure-results.zip
+
+# Lighthouse Results
+lighthouse-results/
+lighthouse-history/
+
+# Authentication State
+.auth/
+*.json.auth
+storageState.json
+
+# Test Artifacts
+downloads/
+traces/
+screenshots/
+videos/
+visual-snapshots/
+**/*-snapshots/
+# Only exclude images in test artifact directories
+test-results/**/*.png
+test-results/**/*.jpg
+test-results/**/*.jpeg
+screenshots/**/*.png
+screenshots/**/*.jpg
+visual-snapshots/**/*.png
+*.webm
+*.mp4
+
+# Backup and temporary files
+*.backup
+*.bak
+*.tmp
+*.temp
+
+# Browsers
+.cache/ms-playwright/
+/ms-playwright/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+pnpm-debug.log*
+
+# Code Coverage
+coverage/
+.nyc_output/
+*.lcov
+.coverage/
+
+# IDE - VS Code
+.vscode/
+.vscode/settings.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/tasks.json
+!.vscode/test.code-snippets
+
+# IDE - IntelliJ
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# IDE - Others
+*.swp
+*.swo
+*~
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.history/
+
+# OS Files
+.DS_Store
+.DS_Store?
+._*
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+Desktop.ini
+.Spotlight-V100
+.Trashes
+Icon
+
+# Build Output
+dist/
+build/
+*.tsbuildinfo
+.rollup.cache/
+.parcel-cache/
+.cache/
+
+# Database Files
+*.db
+*.sqlite
+*.sqlite3
+*.db-shm
+*.db-wal
+
+# Test Data
+test-data/generated/
+test-data/temp/
+test-data/fixtures/*.generated.*
+temp/
+tmp/
+
+# Docker
+.docker/
+.dockerignore
+docker-compose.override.yml
+
+# BDD Generated files
+.features-gen/
+.cucumber/
+cucumber-messages.ndjson
+
+# Coverage
+coverage/
+.nyc_output/
+*.lcov
+*.coverage
+htmlcov/
+.pytest_cache/
+
+# TypeScript
+*.tsbuildinfo
+.tsbuildinfo
+
+# Compiled Code
+*.js.map
+*.d.ts.map
+
+# Session Data
+sessions/
+.sessions/
+session-pool.json
+
+# Sensitive Data
+# Ignore secrets directories but not utils/secrets source code
+secrets/
+!src/**/utils/secrets/
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+
+# Audit & Compliance
+audit-logs/
+compliance-reports/
+
+# Performance
+.benchmarks/
+performance-results/
+
+# Misc
+*.bak
+*.tmp
+*.temp
+.cache/
+.next/
+.nuxt/
+.output/
+.vercel/
+
+# Package Manager
+.yarn/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
+
+# Editor backup files
+*~
+\#*\#
+.#*
+# Examples (Optional - uncomment to exclude examples directory)
+# examples/
+# If you've moved sample tests to examples/ and don't want them in version control,
+# uncomment the line above. Keep committed if you want examples as reference for the team.

@@ -1,0 +1,53 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Product",
+  "type": "object",
+  "required": ["id", "name", "category", "price", "stock"],
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^prod-[0-9]{3,}$",
+      "description": "Unique product identifier"
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 200,
+      "description": "Product name"
+    },
+    "category": {
+      "type": "string",
+      "enum": ["electronics", "accessories", "clothing", "books", "home"],
+      "description": "Product category"
+    },
+    "price": {
+      "type": "number",
+      "minimum": 0,
+      "description": "Product price"
+    },
+    "currency": {
+      "type": "string",
+      "enum": ["USD", "EUR", "GBP"],
+      "default": "USD",
+      "description": "Price currency"
+    },
+    "stock": {
+      "type": "integer",
+      "minimum": 0,
+      "description": "Available stock quantity"
+    },
+    "sku": {
+      "type": "string",
+      "description": "Stock keeping unit"
+    },
+    "description": {
+      "type": "string",
+      "maxLength": 1000,
+      "description": "Product description"
+    },
+    "specifications": {
+      "type": "object",
+      "description": "Product specifications"
+    }
+  }
+}

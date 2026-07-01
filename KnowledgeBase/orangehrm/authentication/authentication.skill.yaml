@@ -1,0 +1,31 @@
+id: kb.orangehrm.authentication
+title: OrangeHRM Authentication Knowledge
+version: 1.0.0
+status: active
+ownerTeam: qa-ui-specialists
+reviewers:
+  - qa-leads
+domain: testing
+tags:
+  - orangehrm
+  - authentication
+  - ui
+sourcePaths:
+  - src/tests/UI/__examples-orangehrm__/authentication
+docRef: KnowledgeBase/orangehrm/authentication/README.md
+relations:
+  dependsOn:
+    - kb.orangehrm.index
+  relatedTo:
+    - kb.orangehrm.dashboard
+  supersedes: []
+lastReviewedAt: 2026-06-18
+nextReviewDueAt: 2026-09-18
+testImpact: direct
+changeFrequency: medium
+files:
+  - orangehrm/authentication/README.md
+  - orangehrm/authentication/overview.md
+  - orangehrm/authentication/login-flows.md
+  - orangehrm/authentication/validations.md
+  - orangehrm/authentication/edge-cases.md

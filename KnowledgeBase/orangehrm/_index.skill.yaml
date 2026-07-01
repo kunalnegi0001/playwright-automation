@@ -1,0 +1,40 @@
+id: kb.orangehrm.index
+title: OrangeHRM Knowledge Index
+version: 1.0.0
+status: active
+ownerTeam: qa-ui-specialists
+reviewers:
+  - qa-leads
+  - qa-architects
+domain: testing
+tags:
+  - orangehrm
+  - ui
+  - feature-index
+sourcePaths:
+  - src/tests/UI/__examples-orangehrm__
+docRef: KnowledgeBase/orangehrm/README.md
+relations:
+  dependsOn:
+    - kb.knowledgebase.flat.manifest
+  relatedTo:
+    - kb.orangehrm.authentication
+    - kb.orangehrm.dashboard
+  supersedes: []
+lastReviewedAt: 2026-06-18
+nextReviewDueAt: 2026-09-18
+testImpact: direct
+changeFrequency: medium
+files:
+  - orangehrm/README.md
+  - orangehrm/authentication/authentication.skill.yaml
+  - orangehrm/authentication/README.md
+  - orangehrm/authentication/overview.md
+  - orangehrm/authentication/login-flows.md
+  - orangehrm/authentication/validations.md
+  - orangehrm/authentication/edge-cases.md
+  - orangehrm/dashboard/dashboard.skill.yaml
+  - orangehrm/dashboard/README.md
+  - orangehrm/dashboard/overview.md
+  - orangehrm/dashboard/widgets.md
+  - orangehrm/dashboard/navigation.md
